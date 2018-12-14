@@ -1,0 +1,8 @@
+What is the importance of hashCode() and equals() methods?
+HashMap uses Key object hashCode() and equals() method to determine the index to put the key-value pair. These methods are also used when we try to get value from HashMap. If these methods are not implemented correctly, two different Key’s might produce same hashCode() and equals() output and in that case rather than storing it at different location, HashMap will consider them same and overwrite them.
+
+Similarly all the collection classes that doesn’t store duplicate data use hashCode() and equals() to find duplicates, so it’s very important to implement them correctly. The implementation of equals() and hashCode() should follow these rules.
+
+If o1.equals(o2), then o1.hashCode() == o2.hashCode()should always be true.
+If o1.hashCode() == o2.hashCode is true, it doesn’t mean that o1.equals(o2) will be true.
+

@@ -1,0 +1,269 @@
+Java List – List in Java
+PANKAJ 2 COMMENTS
+
+
+Java List is an ordered collection. Java List is an interface that extends Collection interface. Java List provides control over the position where you can insert an element. You can access elements by their index and also search elements in the list.
+
+Table of Contents [hide]
+
+1 Java List
+1.1 Java List Class Diagram
+1.2 Java List Methods
+1.3 Java Array to List
+1.4 Java List to Array
+1.5 Java List sort
+1.6 Java List Common Operations
+1.7 Java List iterator
+Java List
+Some of the important points about Java List are;
+
+Java List interface is a member of the Java Collections Framework.
+List allows you to add duplicate elements.
+List allows you to have ‘null’ elements.
+List interface got many default methods in Java 8, for example replaceAll, sort and spliterator.
+List indexes start from 0, just like arrays.
+List supports Generics and we should use it whenever possible. Using Generics with List will avoid ClassCastException at runtime.
+Java List Class Diagram
+Java List interface extends Collection interface. Collection interface externs Iterable interface. Some of the most used List implementation classes are ArrayList, LinkedList, Vector, Stack, CopyOnWriteArrayList. AbstractList provides a skeletal implementation of the List interface to reduce the effort in implementing List.
+
+java list, java list example, java list tutorial, java list interface, java list class diagram
+
+Java List Methods
+Some of the useful Java List methods are;
+
+int size(): to get the number of elements in the list.
+boolean isEmpty(): to check if list is empty or not.
+boolean contains(Object o): Returns true if this list contains the specified element.
+Iterator<E> iterator(): Returns an iterator over the elements in this list in proper sequence.
+Object[] toArray(): Returns an array containing all of the elements in this list in proper sequence
+boolean add(E e): Appends the specified element to the end of this list.
+boolean remove(Object o): Removes the first occurrence of the specified element from this list.
+boolean retainAll(Collection<?> c): Retains only the elements in this list that are contained in the specified collection.
+void clear(): Removes all the elements from the list.
+E get(int index): Returns the element at the specified position in the list.
+E set(int index, E element): Replaces the element at the specified position in the list with the specified element.
+ListIterator<E> listIterator(): Returns a list iterator over the elements in the list.
+List<E> subList(int fromIndex, int toIndex): Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive. The returned list is backed by this list, so non-structural changes in the returned list are reflected in this list, and vice-versa.
+Some of the default methods added to List in Java 8 are;
+
+
+default void replaceAll(UnaryOperator<E> operator): Replaces each element of this list with the result of applying the operator to that element.
+default void sort(Comparator<super E> c): Sorts this list according to the order induced by the specified Comparator.
+default Spliterator<E> spliterator(): Creates a Spliterator over the elements in this list.
+Java Array to List
+We can use Arrays class to get the view of array as list. However we won’t be able to do any structural modification to the list, it will throw java.lang.UnsupportedOperationException. So the best way is to use for loop for creating list by iterating over the array. Below is a simple example showing how to convert java array to list properly.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ArrayToList {
+
+	public static void main(String[] args) {
+		
+		String[] vowels = {"a","e","i","o","u"};
+		
+		List<String> vowelsList = Arrays.asList(vowels);
+		System.out.println(vowelsList);
+		
+		/**
+		 * List is backed by array, we can't do structural modification
+		 * Both of the below statements will throw java.lang.UnsupportedOperationException
+		 */
+		//vowelsList.remove("e");
+		//vowelsList.clear();
+				
+		//using for loop to copy elements from array to list, safe for modification of list
+		List<String> myList = new ArrayList<>();
+		for(String s : vowels){
+			myList.add(s);
+		}
+		System.out.println(myList);
+		myList.clear();
+	}
+
+}
+Choose any of the above methods based on your project requirements.
+
+
+Java List to Array
+A simple example showing the correct way to convert a list to array.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ListToArray {
+
+	public static void main(String[] args) {
+
+		List<String> letters = new ArrayList<String>();
+
+		// add example
+		letters.add("A");
+		letters.add("B");
+		letters.add("C");
+		
+		//convert list to array
+		String[] strArray = new String[letters.size()];
+		strArray = letters.toArray(strArray);
+		System.out.println(Arrays.toString(strArray)); //will print "[A, B, C]"
+	}
+
+}
+Java List sort
+There are two ways to sort a list. We can use Collections class for natural sorting or we can use List sort() method and use our own Comparator for sorting. Below is a simple example for java list sorting.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+public class ListSortExample {
+
+	public static void main(String[] args) {
+		
+		List<Integer> ints = new ArrayList<>();
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) ints.add(random.nextInt(1000));
+		
+		//natural sorting using Collections class
+		Collections.sort(ints);
+		System.out.println("Natural Sorting: "+ints);
+		
+		//My custom sorting, reverse order
+		ints.sort((o1,o2) -> {return (o2-o1);});
+		System.out.println("Reverse Sorting: "+ints);
+	}
+}
+A sample output is given below. Since I am using Random for generating list elements, it will be different every time.
+
+
+Natural Sorting: [119, 273, 388, 450, 519, 672, 687, 801, 812, 939]
+Reverse Sorting: [939, 812, 801, 687, 672, 519, 450, 388, 273, 119]
+Java List Common Operations
+Most common operations performed on java list are add, remove, set, clear, size etc. Below is a simple java list example showing common method usage.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ListExample {
+
+	public static void main(String args[]) {
+		List<String> vowels= new ArrayList<String>();
+		
+		//add example
+		vowels.add("A");
+		vowels.add("I");
+		
+		//let's insert E between A and I
+		vowels.add(1,"E");
+		System.out.println(vowels);
+		
+		List<String> list = new ArrayList<String>();
+		list.add("O");list.add("U");
+		
+		//appending list elements to letters
+		vowels.addAll(list);
+		System.out.println(vowels);
+		
+		//clear example to empty the list
+		list.clear();
+		
+		//size example
+		System.out.println("letters list size = "+vowels.size());
+		
+		//set example
+		vowels.set(2, "E");
+		System.out.println(vowels);
+		
+		//subList example
+		vowels.clear();vowels.add("E"); vowels.add("E");vowels.add("I"); vowels.add("O");
+		list = vowels.subList(0, 2);
+		System.out.println("letters = "+vowels+", list = "+list);
+		vowels.set(0, "A");
+		System.out.println("letters = "+vowels+", list = "+list);
+		list.add("U");
+		System.out.println("letters = "+vowels+", list = "+list);
+		
+		
+	}
+
+}
+Output of above java list example program is;
+
+
+[A, E, I]
+[A, E, I, O, U]
+letters list size = 5
+[A, E, E, O, U]
+letters = [E, E, I, O], list = [E, E]
+letters = [A, E, I, O], list = [A, E]
+letters = [A, E, U, I, O], list = [A, E, U]
+Java List iterator
+Below is a simple example showing how to iterate over list in java.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class ListIteratorExample {
+
+	public static void main(String[] args) {
+
+		List<Integer> list = new ArrayList<>();
+		for(int i=0; i<5; i++) list.add(i);
+		
+		Iterator<Integer> iterator = list.iterator();
+		
+		//simple iteration
+		while(iterator.hasNext()){
+			int i = (int) iterator.next();
+			System.out.print(i + ", ");
+		}
+		System.out.println("\n"+list);
+		
+		//modification of list using iterator
+		iterator = list.iterator();
+		while(iterator.hasNext()){
+			int x = (int) iterator.next();
+			if(x%2 ==0) iterator.remove();
+		}
+		System.out.println(list);
+		
+		//changing list structure while iterating
+		iterator = list.iterator();
+		while(iterator.hasNext()){
+			int x = (int) iterator.next(); //ConcurrentModificationException here
+			if(x==1) list.add(10);
+		}
+	}
+
+}
+Output of above java list iterator program is;
+
+
+0, 1, 2, 3, 4, 
+[0, 1, 2, 3, 4]
+[1, 3]
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
+	at java.util.ArrayList$Itr.next(ArrayList.java:851)
+	at com.journaldev.examples.ListIteratorExample.main(ListIteratorExample.java:34)
+That’s all of a quick roundup on List in Java. I hope these Java List examples will help you in getting started with List collection programming.

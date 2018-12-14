@@ -1,0 +1,121 @@
+Java Map – Map in Java
+PANKAJ LEAVE A COMMENT
+
+
+Java Map is part of collections framework. Java Map object is used to store key-value mappings. Java Map can’t contain duplicate keys however duplicate values are allowed.
+
+Java Map
+java map, map in java, java map example, java map interface
+Some of the important points about Map in java are;
+
+Map provides three collection views – set of keys, set of key-value mappings and collection of values.
+Map doesn’t guarantee order of mappings, however it depends on the implementation. For example, HashMap doesn’t guarantee the order of mappings but TreeMap does.
+Map utilise hashCode and equals methods on Key for get and put operations. So mutable classes are not a good fit for Map keys. If the values of hashCode or equals change after put, you won’t get the correct value in get operation.
+Popular implementation classes of Map in Java are HashMap, Hashtable, TreeMap, ConcurrentHashMap and LinkedHashMap.
+AbstractMap class provides skeletal implementation of the Map interface, most of the Map concrete classes extend AbstractMap class and implement required methods.
+Java Map Methods
+Let’s have a look at some of the important Map methods.
+
+int size(): returns the number of key-value mappings in this Map.
+boolean isEmpty(): returns true if there are no mappings present, otherwise false.
+boolean containsValue(Object value): returns true if there are at least one key mapped to the specified value, otherwise false.
+V get(Object key): returns the value mapped to the given key, if no mapping found then returns null.
+V put(K key, V value): adds the mapping of key-value pair to the map. If there is already a value mapped to this key, then replace the value. This method returns the previous value associated with key, or null if there was no mapping for key.
+V remove(Object key): Removes the mapping for a key from this map if it is present. Returns the value to which this map previously associated the key, or null if the map contained no mapping for the key.
+void putAll(Map<? extends K, ? extends V> m): Copies all of the mappings from the specified map to this map.
+void clear(): removes all the mappings from the Map.
+Set<K> keySet(): returns the Set view of all the keys in the Map. This key set is backed by Map, so any modifications to Map will be reflected to the key set and vice versa.
+Collection<V> values(): returns the collection view of all the values in the Map. This collection is backed by Map, so any change in Map will reflect to this values collection and vice versa.
+Set<Map.Entry<K, V>> entrySet(): returns the Set view of the mappings in the Map. This Set is backed by Map, so any modifications in Map will be reflected in the entry set and vice versa.
+There are few methods in Java Map introduced in Java 8.
+
+
+default V getOrDefault(Object key, V defaultValue): Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.
+default void forEach(BiConsumer<? super K, ? super V> action): Performs the given action for each entry in this map.
+default void replaceAll(BiFunction<? super K, ? super V, ? extends V> function): Replaces each entry’s value with the result of invoking the given function on that entry.
+default V putIfAbsent(K key, V value): If the specified key is not already associated with a value (or is mapped to null) associates it with the given value and returns null, else returns the current value.
+default boolean remove(Object key, Object value): Removes the entry for the specified key only if it is currently mapped to the specified value.
+default boolean replace(K key, V oldValue, V newValue): Replaces the entry for the specified key only if currently mapped to the specified value.
+default V replace(K key, V value): Replaces the entry for the specified key only if it is currently mapped to some value.
+default V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction): If the specified key is not already associated with a value (or is mapped to null), attempts to compute its value using the given mapping function and enters it into this map unless null.
+default V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction): If the value for the specified key is present and non-null, attempts to compute a new mapping given the key and its current mapped value. If the function returns null, the mapping is removed.
+default V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction): Attempts to compute a mapping for the specified key and its current mapped value (or null if there is no current mapping).
+default V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction): If the specified key is not already associated with a value or is associated with null, associates it with the given non-null value. Otherwise, replaces the associated value with the results of the given remapping function, or removes if the result is null.
+You will notice that all the new methods added in the Java 8 Map interface are default methods with implementation. This is done to make sure no compilation error occurs for any classes implementing Map interface.
+
+Java Map Example
+Let’s have a look at a simple program for Java Map example. We will use Map implementation class HashMap for our example program.
+
+
+
+package com.journaldev.examples;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+public class MapExample {
+
+	public static void main(String[] args) {
+
+		Map<String, String> data = new HashMap<>();
+
+		data.put("A", "A"); // put example
+		data.put("B", "B");
+		data.put("C", "C");
+		data.put("D", null); // null value
+		data.put(null, "Z"); // null key
+
+		String value = data.get("C"); // get example
+		System.out.println("Key = C, Value = " + value);
+
+		value = data.getOrDefault("E", "Default Value");
+		System.out.println("Key = E, Value=" + value);
+
+		boolean keyExists = data.containsKey(null);
+		boolean valueExists = data.containsValue("Z");
+
+		System.out.println("keyExists= " + keyExists + ", valueExists= " + valueExists);
+
+		Set<Entry<String, String>> entrySet = data.entrySet();
+		System.out.println(entrySet);
+
+		System.out.println("data map size=" + data.size());
+
+		Map<String, String> data1 = new HashMap<>();
+		data1.putAll(data);
+		System.out.println("data1 mappings= " + data1);
+
+		String nullKeyValue = data1.remove(null);
+		System.out.println("data1 null key value = " + nullKeyValue);
+		System.out.println("data1 after removing null key = " + data1);
+
+		Set<String> keySet = data.keySet();
+		System.out.println("data map keys = " + keySet);
+
+		Collection<String> values = data.values();
+		System.out.println("data map values = " + values);
+
+		data.clear();
+		System.out.println("data map is empty =" + data.isEmpty());
+
+	}
+
+}
+Output of above Map example program is;
+
+
+Key = C, Value = C
+Key = E, Value=Default Value
+keyExists= true, valueExists= true
+[null=Z, A=A, B=B, C=C, D=null]
+data map size=5
+data1 mappings= {null=Z, A=A, B=B, C=C, D=null}
+data1 null key value = Z
+data1 after removing null key = {A=A, B=B, C=C, D=null}
+data map keys = [null, A, B, C, D]
+data map values = [Z, A, B, C, null]
+data map is empty =true
+That’s all for a quick round up on Java Map interface. For Java Map example of new methods introduced in Java 8, please read Java HashMap.

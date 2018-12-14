@@ -1,0 +1,356 @@
+Java LinkedList – LinkedList In Java
+RAMBABU POSA 8 COMMENTS
+
+
+Java LinkedList is an implementation of the List and Deque interfaces. It is one of the frequently used List implementation class.
+
+It extends AbstractSequentialList and implements List and Deque interfaces. It is an ordered collection and supports duplicate elements. It stores elements in Insertion order. It supports adding null elements. It supports index based operations.
+
+If you want to learn more about List basics, please go through this post: Java List.
+
+Table of Contents [hide]
+
+1 Post Brief Table of Content
+2 Java LinkedList
+3 Java LinkedList Class Diagram
+4 Java LinkedList List Methods
+5 Java LinkedList Deque Methods
+6 Java LinkedList Basic Example
+7 Java LinkedList Generics
+8 Java Array to LinkedList
+9 Java LinkedList to Array
+10 Java LinkedList Real-time Usecases
+11 Internal Representation of Java LinkedList
+12 How Insertion works in Java LinkedList?
+13 How Deletion works in Java LinkedList?
+14 Java LinkedList Deque Operations
+15 Java SE 8: Java LinkedList to Stream
+16 Java SE 9 LinkedList
+Post Brief Table of Content
+In this post we are going to this discuss the following concepts.
+
+Java LinkedList
+Java LinkedList Class Diagram
+Java LinkedList List Methods
+Java LinkedList Deque Methods
+Java LinkedList Basic Example
+Java LinkedList Generics
+Java Array to LinkedList
+Java LinkedList to Array
+Java LinkedList Real-time Usecases
+Internal Representation of Java LinkedList
+How Insertion works in Java LinkedList?
+How Deletion works in Java LinkedList?
+Java LinkedList Deque Operations
+Java SE 8: Java LinkedList to Stream
+Java SE 9 LinkedList
+Java LinkedList
+In this section, we will discuss some of the important points about Java LinkedList:
+
+Java LinkedList class is a member of the Java Collections Framework.
+It is an implementation of the List and Deque interfaces.
+Internally, it is an implemented using Doubly Linked List Data Structure.
+It supports duplicate elements.
+It stores or maintains it’s elements in Insertion order.
+We can add any number of null elements.
+It is not synchronised that means it is not Thread safe.
+We can create a synchronised LinkedList using Collections.synchronizedList() method.
+In Java applications, we can use it as a List, stack or queue.
+It does not implement RandomAccess interface. So we can access elements in sequential order only. It does not support accessing elements randomly.
+When we try to access an element from a LinkedList, searching that element starts from the beginning or end of the LinkedList based on where that elements is available.
+We can use ListIterator to iterate LinkedList elements.
+From Java SE 8 on-wards, we can convert a LinkedList into a Stream and vice-versa.
+Java SE 9 is going to add couple of factory methods to create an Immutable LinkedList.
+Java LinkedList Class Diagram
+As we know, Java LinkedList is one the List implementation class. It also implements Deque. As shown in class diagram below, it does NOT extends directly from AbstractList class. It extends AbstractSequentialList class.
+
+
+
+
+Java LinkedList List Methods
+In this section we will discuss some of the useful and frequently used Java LinkedList methods.
+
+The following methods are inherited from List or Collection interface:
+
+int size(): to get the number of elements in the list.
+boolean isEmpty(): to check if list is empty or not.
+boolean contains(Object o): Returns true if this list contains the specified element.
+Iterator iterator(): Returns an iterator over the elements in this list in proper sequence.
+Object[] toArray(): Returns an array containing all of the elements in this list in proper sequence.
+boolean add(E e): Appends the specified element to the end of this list.
+boolean remove(Object o): Removes the first occurrence of the specified element from this list.
+boolean retainAll(Collection c): Retains only the elements in this list that are contained in the specified collection.
+void clear(): Removes all the elements from the list.
+E get(int index): Returns the element at the specified position in the list.
+E set(int index, E element): Replaces the element at the specified position in the list with the specified element.
+ListIterator listIterator(): Returns a list iterator over the elements in the list.
+List subList(int fromIndex, int toIndex): Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive. The returned list is backed by this list, so non-structural changes in the returned list are reflected in this list, and vice-versa.
+Java LinkedList Deque Methods
+The following methods are specific to LinkedList class which are inherited from Deque interface:
+
+void addFirst(E e): Inserts the specified element at the beginning of this list.
+void addLast(E e): Inserts the specified element at the end of this list.
+E getFirst(): Retrieves, but does not remove, the first element of this list. This method differs from peekFirst only in that it throws an exception if this list is empty.
+E getLast(): Retrieves, but does not remove, the last element of this list. This method differs from peekLast only in that it throws an exception if this list is empty.
+E remvoeFirst(): Removes and returns the first element from this list.
+E removeLast(): Removes and returns the last element from this list.
+boolean offerFirst(E e): Inserts the specified element at the front of this list.
+boolean offerLast(E e): Inserts the specified element at the end of this list.
+E pollFirst(): Retrieves and removes the first element of this list, or returns null if this list is empty.
+E pollLast(): Retrieves and removes the last element of this list, or returns null if this list is empty.
+E peekFirst(): Retrieves, but does not remove, the first element of this list, or returns null if this list is empty.
+E peekLast(): Retrieves, but does not remove, the last element of this list, or returns null if this list is empty.
+Java LinkedList Basic Example
+In this section, we will discuss about Java LinkedList basic example. We will explore some more useful operations in the coming sections.
+
+Example:-
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListDemo 
+{
+  public static void main(String[] args) 
+  {
+	List names = new LinkedList();
+	names.add("Rams");
+	names.add("Posa");
+	names.add("Chinni");
+        names.add(2011);
+			
+	System.out.println("LinkedList content: " + names);
+	System.out.println("LinkedList size: " + names.size());
+  }
+}
+Output:-
+
+
+LinkedList content: [Rams, Posa, Chinni, 2011]
+LinkedList size: 4
+Here we have created a LinkedList object and added 4 items. As we discussed LinkedList.size() method is used to get the number of elements in the list.
+
+NOTE:- Without using Generics, Java LinkedList supports Heterogeneous elements. However, it is not recommended to use Collections without Generics. Let us explore Java Generics Advantages and usage in the coming section with one simple example.
+
+Java LinkedList Generics
+In this section, we will discuss on how to use Generics with Java LinkedList. As we know, Java Generics are useful to write Type Safety programming and do Stronger type checks at compile time. They are also useful to eliminate the casting overhead.
+
+Example:-
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListGenericsDemo
+{
+  public static void main(String[] args) 
+  {
+	List<String> names = new LinkedList<>();
+	names.add("Rams");
+	names.add("Posa");
+	names.add("Chinni");
+        // We cannot add other than Strings
+        // names.add(2011);
+			
+	System.out.println("LinkedList content: " + names);
+	System.out.println("LinkedList size: " + names.size());
+  }
+}
+Output:-
+
+
+LinkedList content: [Rams, Posa, Chinni]
+LinkedList size: 3
+Here we have created a LinkedList object with Generics and added 3 items. When we try to add a Number for LinkedList, it throws compile-time error.
+
+Java Array to LinkedList
+In this section, we will explore how to convert a Java Array to LinkedList object. We can do it in many ways, however I have given only one approach here.
+
+Example:-
+
+
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class JavaArrayToLinkedListDemo 
+{
+	public static void main(String[] args) 
+	{
+		Integer[] numbers = {1,2,3,4,5};
+		List<Integer> numbersList = new LinkedList<>();
+		for(Integer s : numbers){
+			numbersList.add(s);
+		}
+		System.out.println(numbersList);
+	}
+}
+Output:-
+
+
+[1, 2, 3, 4, 5]
+Java LinkedList to Array
+In this section, we will explore how to convert a Java LinkedList to an Array. We can do it in many ways, however I have given only one approach here.
+
+Example:-
+
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListToJavaArrayDemo 
+{
+	public static void main(String[] args) 
+	{		
+		List<Integer> numbersList = new LinkedList<>();
+		numbersList.add(1);
+		numbersList.add(2);
+		numbersList.add(3);
+		numbersList.add(4);
+		numbersList.add(5);
+		Integer[] numbers = new Integer[numbersList.size()];
+		
+		numbers = numbersList.toArray(numbers);
+		System.out.println(Arrays.toString(numbers));
+
+	}
+}
+Output:-
+
+
+[1, 2, 3, 4, 5]
+Java LinkedList Real-time Usecases
+In this section, we will discuss about what is the best and what is the worst case scenarios to use LinkedList in Java applications.
+
+Best Usecase scenario:-
+
+When our frequently used operation is adding or removing elements in the middle of the List, LinkedList is the best class to use.
+Why? Because we don’t need to do more shifts to add or remove elements at the middle of the list. Please refer “How Insertion works in J Java LinkedList?” section to understand it in-detail.
+
+Worst Usecase scenario:-
+
+When our frequently used operation is retrieving elements from list, then LinkedList is the worst choice.
+Why? Because LinkedList supports only sequential access, does NOT support random access. Please refer “How Deletion works in J Java LinkedList?” section to understand it in-detail.
+
+NOTE:-
+LinkedList implements List, Deque, Cloneable and Serializable. But it does NOT implement RandomAccess interface.
+
+Internal Representation of Java LinkedList
+As we know, internally Java LinkedList is implemented using Doubly Linked List. So Java LinkedList represents it’s elements as Nodes. Each Node is divided into 3 portions as shown below.
+
+
+
+Here each Node is used for a specific purpose.
+
+Left side Node Part is used to point to the previous Node (Or Element) in the LinkedList.
+Right side Node Part is used to point to the next Node (Or Element) in the LinkedList.
+Center Node Part is used to store actual data.
+NOTE:- In JVM, LinkedList does NOT store it’s elements in consecutive order. It stores it’s elements at any available space and they are connected each other using Left and Right side Node portions as shown in the below diagram.
+
+
+
+How Insertion works in Java LinkedList?
+We have already seen how LinkedList stores it’s elements as Nodes in the previous section. In this section, we will discuss about how Java LinkedList’s Insertion operation works internally.
+
+Let us assume our initial LinkedList has the following data.
+
+
+Perform the following Insertion operation on this LinkedList
+
+linkedList.add(2,54);
+Here we are trying to perform Insertion operation to add new element with value “54” at index 2.
+
+Updated LinkedList looks like below.
+
+
+How Deletion works in Java LinkedList?
+We have already seen how LinkedList performs Insertion operation internally in the previous section. In this section, we will discuss about how Java LinkedList’s Deletion operation works internally.
+
+Let us assume our initial LinkedList has the following data.
+
+
+Perform the following Insertion operation on this LinkedList
+
+linkedList.remove(3);
+Here we are trying to perform Deletion operation to delete an element which is available at index 3.
+
+Updated LinkedList looks like below.
+
+
+Java LinkedList Deque Operations
+Here we will explore how a LinkedList object works as a Deque. We use these operations to implement Queues or Stacks. We will discuss how a Stack or Queues works in-depth in my coming posts.
+
+Example:-
+
+
+import java.util.LinkedList;
+import java.util.LinkedList;
+import java.util.Deque;
+
+public class LinkedListDequeOperationsDemo 
+{
+  public static void main(String[] args) 
+  {
+	Deque names = new LinkedList();
+	names.add(2);
+	names.addFirst(1);
+	names.addLast(3);
+	names.addFirst(0);
+	names.addLast(4);
+			
+	System.out.println("LinkedList content: " + names);
+	System.out.println("LinkedList size: " + names.size());
+	names.removeFirst();
+	names.removeLast();
+	
+	System.out.println("LinkedList content: " + names);
+	System.out.println("LinkedList size: " + names.size());	
+  }
+}
+Output:-
+
+
+LinkedList content: [0, 1, 2, 3, 4]
+LinkedList size: 5
+LinkedList content: [1, 2, 3]
+LinkedList size: 3
+Java SE 8: Java LinkedList to Stream
+Here we will explore how to convert a LinkedList object to Java SE 8 Stream concept.
+
+Example:-
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListToStreamDemo 
+{
+  public static void main(String[] args) 
+  {		
+	List<Integer> numbersList = new LinkedList<>();
+	numbersList.add(1);
+	numbersList.add(2);
+	numbersList.add(3);
+	numbersList.add(4);
+	numbersList.add(5);
+		
+	//convert List to stream
+	numbersList.stream().forEach(System.out::println);
+  }
+}
+Output:-
+
+
+1
+2
+3
+4
+5
+Java SE 9 LinkedList
+In Java SE 9, Oracle Corp is going to add some useful utility methods to create Immutable List. If you want to learn them in-depth with some useful examples, please go through my post at: Java SE 9: Factory Methods for Immutable List
+
+That’s all of a quick roundup on LinkedList in Java. I hope these Java LinkedList examples will help you in getting started with LinkedList programming.
+
+Thank you for reading my tutorials. Please drop me a comment if you like my tutorials or have any issues or suggestions or any type errors.

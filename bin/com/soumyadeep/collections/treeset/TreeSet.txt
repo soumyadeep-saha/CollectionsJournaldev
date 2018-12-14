@@ -1,0 +1,160 @@
+Java TreeSet
+PANKAJ 3 COMMENTS
+
+
+Java TreeSet is the most popular implementation of java.util.SortedSet. SortedSet is an interface that extends java.util.Set. Java Sorted Set provides total ordering on its elements.
+
+Table of Contents [hide]
+
+1 Java TreeSet
+1.1 Java TreeSet Constructors
+1.2 Java TreeSet Example
+1.3 Java TreeSet Comparable
+1.4 Java TreeSet Comparator
+1.5 Java Sorted Set Example
+1.6 Java SortedSet Methods
+1.7 Java SortedSet Implementation
+Java TreeSet
+Java TreeSet, Java Sorted Set
+
+In other words, while iterating the TreeSet, we can expect sorted data. Java TreeSet elements are ordered as per their natural ordering or we can provide a Comparator while creating SortedSet. If we don’t provide specific Comparator during set creation, elements must implement the Comparable to ensure natural ordering.
+
+Java TreeSet Constructors
+TreeSet is very popular implementation of SortedSet. As per specification, all sorted set implementation classes should provide 4 types of constructors.
+
+A void (no arguments) constructor: It should create a sorted set which is sorted according to the natural ordering of its elements.
+A constructor with an argument of type Comparator: It should create a sorted set which is sorted according to the provided Comparator.
+A constructor with an argument of type Collection: It should create a sorted set with elements of provided collection which is sorted according to the natural ordering of elements.
+A constructor with an argument of type SortedSet: It should behave as a copy constructor and create a new sorted set with the same elements and the same ordering of provided sorted set.
+Unfortunately, interfaces can’t contain constructors. So, there isn’t any way to enforce these recommendations.
+
+Java TreeSet Example
+Now let’s create a sorted set using different ways, as mentioned earlier we will look at different examples of java TreeSet.
+
+
+
+// Create a sorted set of Integers
+SortedSet<Integer> setWithNaturalOrdering = new TreeSet<>();
+setWithNaturalOrdering.add(5);
+setWithNaturalOrdering.add(9);
+setWithNaturalOrdering.add(4);
+setWithNaturalOrdering.add(2);
+setWithNaturalOrdering.forEach(System.out::println);
+Output of the above java TreeSet example code will be like below image.
+
+Java TreeSet Example
+
+Java TreeSet Comparable
+Now, we’ll create a sorted set with objects of Person class. To, provide natural ordering Person class should have implementation of Comparable interface.
+
+
+class Person implements Comparable<Person> {
+    int id;
+    String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Person p) {
+        return this.name.compareTo(p.name);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+}
+
+// Create a sorted set with user defined class
+SortedSet<Person> sortedSet = new TreeSet<>();
+sortedSet.add(new Person(1, "Mark"));
+sortedSet.add(new Person(2, "Vispi"));
+sortedSet.add(new Person(3, "Harmony"));
+sortedSet.forEach(System.out::println);
+Output:
+
+
+
+Harmony
+Mark
+Vispi
+Java TreeSet Comparator
+To provide different ordering, we need to pass custom comparator implementation while creating sorted set. For instance, let’s sort set according to the id attribute of Person class.
+
+
+// we can also provide instance of Comparator implementation instead of lambda
+SortedSet<Person> customOrderedSet = new TreeSet<>((p1, p2) -> p1.id - p2.id);
+customOrderedSet.addAll(sortedSet);
+customOrderedSet.forEach(System.out::println);
+Java TreeSet Comparator
+
+Java Sorted Set Example
+We can also create sorted set by passing another collection object or a different sorted set.
+
+
+List<Person> listOfPerson = Arrays.asList(new Person(1, "Mark"), new Person(2, "Vispi"), new Person(3, "Harmony"));
+SortedSet<Person> sortedSetFromCollection = new TreeSet<>(listOfPerson);
+SortedSet<Person> copiedSet = new TreeSet<>(sortedSetFromCollection);
+copiedSet.forEach(System.out::println);
+In both the cases we get following output:
+
+
+Harmony
+Mark
+Vispi
+Java SortedSet Methods
+SortedSet certainly gets some extra privileges as compared to Set because of its sorted nature. As you might have already guessed, apart from inherited methods from the Set interface, it also provides a few additional methods.
+
+Comparator<? super E> comparator(): Returns the comparator instance used to order elements in the set. If elements are sorted as per their natural ordering, it returns null.
+SortedSet<E> subSet(E fromElement, E toElement): Returns a portion of this set for given range. (fromElement is inclusive whereas toElement is exclusive). Note that it returns a view of the subset. Thus, changes performed on the returned set are reflected in actual set.
+SortedSet<E> headSet(E toElement): Returns a view of the portion of this set whose elements are strictly less than toElement.
+SortedSet<E> tailSet(E fromElement): Returns a view of the portion of this set whose elements are greater than or equal to fromElement.
+E first(): Returns the first element of the set which happens to be lowest element in the set.
+E last(): Returns the last element of the set which happens to be highest element in the set.
+Java SortedSet Implementation
+Let’s explore these methods with an example. We’ll create a sorted set by passing a comparator. Here, comparator() method will return the same comparator:
+
+
+SortedSet<Integer> intSet = new TreeSet<>(Comparator.naturalOrder());
+intSet.addAll(Arrays.asList(7,2,1,4,6,5));
+Comparator comparator = intSet.comparator();
+Now, let’s find subset using subSet(from, to) method. Note that the changes made on subset are reflected on the original set as well.
+
+
+SortedSet<Integer> subSet = intSet.subSet(2, 5);
+System.out.println(subSet);
+subSet.add(3);
+System.out.println(intSet);
+Output:
+
+
+[2, 4]
+[1, 2, 3, 4, 5, 6, 7]
+Simillarly, let’s check out other methods:
+
+
+subSet = intSet.headSet(3);
+System.out.println("Head set");
+System.out.println(subSet);
+
+subSet = intSet.tailSet(3);
+System.out.println("Tail set");
+System.out.println(subSet);
+
+System.out.println("Retrieving lowest and highest elements respectively");
+System.out.println(intSet.first());
+System.out.println(intSet.last());
+Output:
+
+
+Head set
+[1, 2]
+Tail set
+[3, 4, 5, 6, 7]
+Retrieving lowest and highest elements respectively
+1
+7
+That’s all for Java TreeSet or java sorted set.

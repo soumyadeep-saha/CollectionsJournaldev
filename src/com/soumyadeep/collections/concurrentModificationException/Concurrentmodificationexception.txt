@@ -1,0 +1,261 @@
+java.util.ConcurrentModificationException
+PANKAJ 46 COMMENTS
+
+
+java.util.ConcurrentModificationException is a very common exception when working with java collection classes. Java Collection classes are fail-fast, which means if the Collection will be changed while some thread is traversing over it using iterator, the iterator.next() will throw ConcurrentModificationException. Concurrent modification exception can come in case of multithreaded as well as single threaded java programming environment.
+
+Table of Contents [hide]
+
+1 java.util.ConcurrentModificationException
+1.1 To Avoid ConcurrentModificationException in multi-threaded environment
+1.2 To Avoid ConcurrentModificationException in single-threaded environment
+1.3 Use for loop to avoid java.util.ConcurrentModificationException
+java.util.ConcurrentModificationException
+java.util.ConcurrentModificationException, ConcurrentModificationException, Concurrent Modification Exception, Java ConcurrentModificationException
+
+Let’s see the concurrent modification exception scenario with an example.
+
+
+package com.journaldev.ConcurrentModificationException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+public class ConcurrentModificationExceptionExample {
+
+	public static void main(String args[]) {
+		List<String> myList = new ArrayList<String>();
+
+		myList.add("1");
+		myList.add("2");
+		myList.add("3");
+		myList.add("4");
+		myList.add("5");
+
+		Iterator<String> it = myList.iterator();
+		while (it.hasNext()) {
+			String value = it.next();
+			System.out.println("List Value:" + value);
+			if (value.equals("3"))
+				myList.remove(value);
+		}
+
+		Map<String, String> myMap = new HashMap<String, String>();
+		myMap.put("1", "1");
+		myMap.put("2", "2");
+		myMap.put("3", "3");
+
+		Iterator<String> it1 = myMap.keySet().iterator();
+		while (it1.hasNext()) {
+			String key = it1.next();
+			System.out.println("Map Value:" + myMap.get(key));
+			if (key.equals("2")) {
+				myMap.put("1", "4");
+				// myMap.put("4", "4");
+			}
+		}
+
+	}
+}
+Above program will throw java.util.ConcurrentModificationException when executed, as shown in below console logs.
+
+
+List Value:1
+List Value:2
+List Value:3
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:937)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:891)
+	at com.journaldev.ConcurrentModificationException.ConcurrentModificationExceptionExample.main(ConcurrentModificationExceptionExample.java:22)
+
+From the output stack trace, its clear that the concurrent modification exception is coming when we call iterator next() function. If you are wondering how Iterator checks for the modification, its implementation is present in AbstractList class where an int variable modCount is defined. modCount provides the number of times list size has been changed. modCount value is used in every next() call to check for any modifications in a function checkForComodification().
+
+Now comment the list part and run the program again. You will see that there is no ConcurrentModificationException being thrown now.
+
+
+Output will be:
+
+
+Map Value:3
+Map Value:2
+Map Value:4
+Since we are updating the existing key value in the myMap, its size has not been changed and we are not getting ConcurrentModificationException. Note that the output may differ in your system because HashMap keyset is not ordered like list. If you will uncomment the statement where I am adding a new key-value in the HashMap, it will cause ConcurrentModificationException.
+
+To Avoid ConcurrentModificationException in multi-threaded environment
+You can convert the list to an array and then iterate on the array. This approach works well for small or medium size list but if the list is large then it will affect the performance a lot.
+You can lock the list while iterating by putting it in a synchronized block. This approach is not recommended because it will cease the benefits of multithreading.
+If you are using JDK1.5 or higher then you can use ConcurrentHashMap and CopyOnWriteArrayList classes. This is the recommended approach to avoid concurrent modification exception.
+To Avoid ConcurrentModificationException in single-threaded environment
+You can use the iterator remove() function to remove the object from underlying collection object. But in this case you can remove the same object and not any other object from the list.
+
+Let us run an example using Concurrent Collection classes:
+
+
+
+package com.journaldev.ConcurrentModificationException;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class AvoidConcurrentModificationException {
+
+	public static void main(String[] args) {
+
+		List<String> myList = new CopyOnWriteArrayList<String>();
+
+		myList.add("1");
+		myList.add("2");
+		myList.add("3");
+		myList.add("4");
+		myList.add("5");
+
+		Iterator<String> it = myList.iterator();
+		while (it.hasNext()) {
+			String value = it.next();
+			System.out.println("List Value:" + value);
+			if (value.equals("3")) {
+				myList.remove("4");
+				myList.add("6");
+				myList.add("7");
+			}
+		}
+		System.out.println("List Size:" + myList.size());
+
+		Map<String, String> myMap = new ConcurrentHashMap<String, String>();
+		myMap.put("1", "1");
+		myMap.put("2", "2");
+		myMap.put("3", "3");
+
+		Iterator<String> it1 = myMap.keySet().iterator();
+		while (it1.hasNext()) {
+			String key = it1.next();
+			System.out.println("Map Value:" + myMap.get(key));
+			if (key.equals("1")) {
+				myMap.remove("3");
+				myMap.put("4", "4");
+				myMap.put("5", "5");
+			}
+		}
+
+		System.out.println("Map Size:" + myMap.size());
+	}
+
+}
+Output of above program is shown below. You can see that there is no ConcurrentModificationException being thrown by the program.
+
+
+List Value:1
+List Value:2
+List Value:3
+List Value:4
+List Value:5
+List Size:6
+Map Value:1
+Map Value:2
+Map Value:4
+Map Value:5
+Map Size:4
+From the above example its clear that:
+
+Concurrent Collection classes can be modified safely, they will not throw ConcurrentModificationException.
+In case of CopyOnWriteArrayList, iterator doesn’t accommodate the changes in the list and works on the original list.
+In case of ConcurrentHashMap, the behaviour is not always the same.
+For condition:
+
+
+if(key.equals("1")){
+	myMap.remove("3");}
+Output is:
+
+
+Map Value:1
+Map Value:null
+Map Value:4
+Map Value:2
+Map Size:4
+It is taking the new object added with key “4” but not the next added object with key “5”.
+
+Now if I change the condition to below.
+
+
+if(key.equals("3")){
+	myMap.remove("2");}
+Output is:
+
+
+Map Value:1
+Map Value:3
+Map Value:null
+Map Size:4
+In this case its not considering the new added objects.
+
+So if you are using ConcurrentHashMap then avoid adding new objects as it can be processed depending on the keyset. Note that the same program can print different values in your system because HashMap keyset is not ordered.
+
+Use for loop to avoid java.util.ConcurrentModificationException
+If you are working on single-threaded environment and want your code to take care of the extra added objects in the list then you can do so using for loop rather than iterator.
+
+
+for(int i = 0; i<myList.size(); i++){
+	System.out.println(myList.get(i));
+	if(myList.get(i).equals("3")){
+		myList.remove(i);
+		i--;
+		myList.add("6");
+	}
+}
+Note that I am decreasing the counter because I am removing the same object, if you have to remove the next or further far object then you don’t need to decrease the counter. Try it yourself. 🙂
+
+One More Thing: You will get ConcurrentModificationException if you will try to modify the structure of original list with subList. Let’s see this with a simple example.
+
+
+package com.journaldev.ConcurrentModificationException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConcurrentModificationExceptionWithArrayListSubList {
+
+	public static void main(String[] args) {
+
+		List<String> names = new ArrayList<>();
+		names.add("Java");
+		names.add("PHP");
+		names.add("SQL");
+		names.add("Angular 2");
+
+		List<String> first2Names = names.subList(0, 2);
+
+		System.out.println(names + " , " + first2Names);
+
+		names.set(1, "JavaScript");
+		// check the output below. :)
+		System.out.println(names + " , " + first2Names);
+
+		// Let's modify the list size and get ConcurrentModificationException
+		names.add("NodeJS");
+		System.out.println(names + " , " + first2Names); // this line throws exception
+
+	}
+
+}
+Output of above program is:
+
+
+[Java, PHP, SQL, Angular 2] , [Java, PHP]
+[Java, JavaScript, SQL, Angular 2] , [Java, JavaScript]
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$SubList.checkForComodification(ArrayList.java:1282)
+	at java.base/java.util.ArrayList$SubList.listIterator(ArrayList.java:1151)
+	at java.base/java.util.AbstractList.listIterator(AbstractList.java:311)
+	at java.base/java.util.ArrayList$SubList.iterator(ArrayList.java:1147)
+	at java.base/java.util.AbstractCollection.toString(AbstractCollection.java:465)
+	at java.base/java.lang.String.valueOf(String.java:2801)
+	at java.base/java.lang.StringBuilder.append(StringBuilder.java:135)
+	at com.journaldev.ConcurrentModificationException.ConcurrentModificationExceptionWithArrayListSubList.main(ConcurrentModificationExceptionWithArrayListSubList.java:26)
+According to the ArrayList subList documentation, structural modifications is allowed only on the list returned by subList method. All methods on returned list first check to see if the actual modCount of the backing list is equal to its expected value, and throw a ConcurrentModificationException if it is not.

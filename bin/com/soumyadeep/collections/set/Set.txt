@@ -1,0 +1,293 @@
+Java Set – Set in Java
+RAMBABU POSA 8 COMMENTS
+
+
+Java Set is a collection of elements (Or objects) that contains no duplicate elements. Java Set is an interface that extends Collection interface. Unlike List, Java Set is NOT an ordered collection, it’s elements does NOT have a particular order. Java Set does NOT provide a control over the position where you can insert an element. You cannot access elements by their index and also search elements in the list.
+
+
+
+Table of Contents [hide]
+
+1 Java Set
+2 Java Set Class Diagram
+3 Java Set Methods
+4 Java Array to Set
+5 Java Set to Array
+6 Java Set Sorting
+7 Java Set Common Operations
+8 Java Set Iterator
+9 Java Set to Stream
+10 Java SE 9 Set
+Java Set
+In this section, we will discuss some of the important points about Java Set:
+
+Java Set interface is a member of the Java Collections Framework.
+Unlike List, Set DOES NOT allow you to add duplicate elements.
+Set allows you to add at most one null element only.
+Set interface got one default method in Java 8: spliterator.
+Unlike List and arrays, Set does NOT support indexes or positions of it’s elements.
+Set supports Generics and we should use it whenever possible. Using Generics with Set will avoid ClassCastException at runtime.
+We can use Set interface implementations to maintain unique elements.
+Java Set Class Diagram
+Java Set interface extends Collection interface. Collection interface extends Iterable interface. Some of the frequently used Set implementation classes are HashSet, LinkedHashSet, TreeSet, CopyOnWriteArraySet and ConcurrentSkipListSet. AbstractSet provides a skeletal implementation of the Set interface to reduce the effort in implementing Set.
+
+
+
+Java Set Methods
+In this section we will discuss some of the useful Java Set methods:
+
+
+int size(): to get the number of elements in the Set.
+boolean isEmpty(): to check if Set is empty or not.
+boolean contains(Object o): Returns true if this Set contains the specified element.
+Iterator iterator(): Returns an iterator over the elements in this set. The elements are returned in no particular order.
+Object[] toArray(): Returns an array containing all of the elements in this set. If this set makes any guarantees as to what order its elements are returned by its iterator, this method must return the elements in the same order.
+boolean add(E e): Adds the specified element to this set if it is not already present (optional operation).
+boolean remove(Object o): Removes the specified element from this set if it is present (optional operation).
+boolean removeAll(Collection c): Removes from this set all of its elements that are contained in the specified collection (optional operation).
+boolean retainAll(Collection c): Retains only the elements in this set that are contained in the specified collection (optional operation).
+void clear(): Removes all the elements from the set.
+Iterator	iterator(): Returns an iterator over the elements in this set.
+Java Array to Set
+Unlike List, We cannot convert a Java Set into an array directly as it’s NOT implemented using an Array.
+So We cannot use Arrays class to get the view of array as set. We can follow another approach. We can convert an array into List using Arrays.asList() method, then use it to create a Set. By using this approach, we can covert a Java Array to Set in two ways. Let us discuss them one by one using one simple example.
+
+Approach-1
+In this approach, first We need to create a List using given array and use it to create a Set as shown below.
+
+
+import java.util.*;
+
+public class ArrayToSet {
+   public static void main(String[] args) {
+		
+	String[] vowels = {"a","e","i","o","u"};
+		
+	Set<String> vowelsSet = new HashSet>(Arrays.asList(vowels));
+	System.out.println(vowelsSet);
+	
+	/**
+	 * Unlike List, Set is NOt backed by array, 
+	 * so we can do structural modification without any issues.
+	 */
+	vowelsSet.remove("e");
+	System.out.println(vowelsSet);
+	vowelsSet.clear();
+	System.out.println(vowelsSet);
+   }
+}
+Approach-2
+In this approach, we do NOT use intermediate List to create a Set from an Array. First create an empty HashSet, then use Collections.addAll() to copy array elements into the given Set as shown below.
+
+
+import java.util.*;
+
+public class ArrayToSet2 {
+   public static void main(String[] args) {
+		
+	String[] vowels = {"a","e","i","o","u"};
+		
+	Set<String> vowelsSet = new HashSet<>();
+	Collections.addAll(vowelsSet, vowels); 
+	System.out.println(vowelsSet);
+
+	/** 
+	 * Unlike List, Set is NOt backed by array, 
+	 * so we can do structural modification without any issues.
+	 */
+	vowelsSet.remove("e");
+	System.out.println(vowelsSet);
+	vowelsSet.clear();
+	System.out.println(vowelsSet);
+   }
+}
+Output:-
+When we run above two programs, we will get the same output as shown below.
+
+
+
+[a, e, u, i, o]
+[a, u, i, o]
+[]
+Java Set to Array
+In this section, we will write a program to convert a Set of Strings into an Array of String using Set.toArray() method as shown below.
+
+
+import java.util.*;
+
+public class SetToArray {
+   public static void main(String[] args) {
+	Set<String< vowelsSet = new HashSet<>();
+
+	// add example
+	vowelsSet.add("a");
+	vowelsSet.add("e");
+	vowelsSet.add("i");
+	vowelsSet.add("o");
+	vowelsSet.add("u");
+		
+	//convert Set to Array
+	String strArray[] = vowelsSet.toArray(new String[vowelsSet.size()]);
+	System.out.println(Arrays.toString(strArray)); 
+   }
+}
+Output:-
+When we run above program, we will get the following output as shown below.
+
+
+[a, e, u, i, o]
+Java Set Sorting
+As we know, Set (HashSet) does NOT support sorting elements directly. It stores and display it’s elements in random order.
+
+However, we have some approaches to sort it’s elements as shown below:
+
+
+import java.util.*;
+
+public class SetSortingExample {
+
+	public static void main(String[] args) {
+		Set<Integer> intsSet = new HashSet<>();
+		Random random = new Random();
+		for (int i = 0; i  {return (o2-o1);});
+		System.out.println("Reverse Sorting: " + intsList2);
+
+		// Approach-3
+		Set<Integer> sortedSet = new TreeSet<>(intsSet);
+		System.out.println("Sorted Set: " + sortedSet);
+	}
+}
+Output:-
+When we run above program, we will see the following output.
+
+
+[560, 864, 176, 657, 135, 103, 40, 123, 555, 589]
+Natural Sorting: [40, 103, 123, 135, 176, 555, 560, 589, 657, 864]
+Before Sorting: [560, 864, 176, 657, 135, 103, 40, 123, 555, 589]
+Reverse Sorting: [864, 657, 589, 560, 555, 176, 135, 123, 103, 40]
+Sorted Set: [40, 103, 123, 135, 176, 555, 560, 589, 657, 864]
+Java Set Common Operations
+Most common operations performed on Java Set are add, addAll, clear, size etc. Below is a simple Java Set example showing common method usage.
+
+
+import java.util.*;
+
+public class SetCommonOperations 
+{
+   public static void main(String args[]) 
+   {
+	Set<String> vowels= new HashSet<>();
+		
+	//add example
+	vowels.add("A");
+	vowels.add("E");
+	vowels.add("I");
+
+	//We cannot insert elements based on index to a Set
+	System.out.println(vowels);
+		
+	Set<String> set = new HashSet<>();
+	set.add("O");
+	set.add("U");
+	
+	//appending set elements to letters
+	vowels.addAll(set);
+	System.out.println(vowels);
+	
+	//clear example to empty the set
+	set.clear();
+		
+	//size example
+	System.out.println("letters set size = " + vowels.size());
+		
+	vowels.clear();
+	vowels.add("E"); vowels.add("E");vowels.add("I"); vowels.add("O");
+	System.out.println("Given set contains E element or not? = " + vowels.contains("E"));
+		
+   }
+}
+Output:-
+
+
+[A, E, I]
+[A, E, U, I, O]
+letters set size = 5
+Given set contains E element or not? = true
+Java Set Iterator
+Below is a simple example showing how to iterate over Java Set.
+
+
+import java.util.*;
+
+public class SetIteratorExample
+{
+   public static void main(String[] args) 
+   {
+
+	Set<Integer> set = new HashSet<>();
+	for(int i=0; i<5; i++) 
+		set.add(i);
+		
+	Iterator iterator = set.iterator();
+	
+	//simple iteration
+	while(iterator.hasNext()){
+		int i = (int) iterator.next();
+		System.out.print(i + ", ");
+	}
+	System.out.println("\n" + set);
+	
+	//modification of set using iterator
+	iterator = set.iterator();
+	while(iterator.hasNext()){
+		int x = (int) iterator.next();
+		if(x%2 ==0) iterator.remove();
+	}
+	System.out.println(set);
+		
+	//changing set structure while iterating
+	iterator = set.iterator();
+	while(iterator.hasNext()){
+                //ConcurrentModificationException here
+		int x = (int) iterator.next(); 
+		if(x==1) set.add(10);
+	}
+   }
+}
+Java Set to Stream
+Below is a simple example showing how to convert a Java Set to Stream and perform some operations as per our requirements.
+
+
+import java.util.*;
+
+public class SetToStream {
+
+   public static void main(String[] args) {
+	Set<String> vowelsSet = new HashSet<>();
+	// add example
+	vowelsSet.add("a");
+	vowelsSet.add("e");
+	vowelsSet.add("i");
+	vowelsSet.add("o");
+	vowelsSet.add("u");
+		
+	//convert set to stream
+	vowelsSet.stream().forEach(System.out::println);
+   }
+}
+Output:-
+
+
+a
+e
+u
+i
+o
+Java SE 9 Set
+In Java SE 9 release, Oracle Corp is going to add some useful utility methods to Set interface. It’s better to understand them with some simple and useful examples.
+
+Please go through my tutorial at “Java SE 9: Set Factory Methods” to learn them.
+
+That’s all of a quick roundup on Set in Java. I hope these Java Set examples will help you in getting started with Set collection programming.
+
+Thank you for reading my tutorials. Please drop me a comment if you like my tutorials or have any issues or suggestions or any type errors.

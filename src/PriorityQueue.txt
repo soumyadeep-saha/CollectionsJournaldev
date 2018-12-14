@@ -1,0 +1,121 @@
+Priority Queue Java
+PANKAJ LEAVE A COMMENT
+
+
+Every now and then we need to process items of a queue in a particular order. Priority queue is a Data Structure that does the job. Java priority queue is different from “normal” queue. Instead of “First-In-First-Out”, it retrieves the items in order of their priority.
+
+Table of Contents [hide]
+
+1 Priority Queue Java
+1.1 Java PriorityQueue Constructors
+1.2 Java PriorityQueue Example
+1.3 Java PriorityQueue Methods
+1.4 Java PriorityQueue Time Complexity
+Priority Queue Java
+The java.util.PriorityQueue class, provides us an implementation of such a data type, by using priority heap implementation internally. Java PriorityQueue is an unbounded queue. It was introduced in Java 1.5 and enhanced in Java SE 8 release. PriorityQueue is internally implemented by following “Priority Heap” data structure.
+
+Here is the PriorityQueue class hierarchy:
+
+Priority Queue Java
+
+PriorityQueue Class Diagram:
+
+Java PriorityQueue Class Diagram
+
+
+Java PriorityQueue Constructors
+PriorityQueue() – Creates a PriorityQueue with the default initial capacity, i.e. 11
+PriorityQueue(Collection c) – Creates a PriorityQueue with the elements in the specified collection
+PriorityQueue(int initialCapacity) – Creates a PriorityQueue with the specified initial capacity
+PriorityQueue(int initialCapacity, Comparator comparator) – Creates a PriorityQueue with the provided initial capacity and the ordering of its elements is according to the specified comparator
+PriorityQueue(PriorityQueue c) – Creates a PriorityQueue containing the elements in the specified priority queue
+PriorityQueue(SortedSet c) – Creates a PriorityQueue containing the elements in the specified sorted set
+Priority Queue elements are ordered by their natural ordering unless we provide a Comparator while creating it.
+The elements are ordered in ascending order by default, hence the head of the queue is the element whose priority is lowest.
+
+If there are two elements which are eligible to become the head at the same time, this kind of ties are broken arbitrarily.
+
+Java PriorityQueue Example
+Let’s create a PriorityQueue, containing various tasks:
+
+
+PriorityQueue tasks=new PriorityQueue();
+tasks.add("task1");
+tasks.add("task4");
+tasks.add("task3");
+tasks.add("task2");
+tasks.add("task5");
+This creates a PriorityQueue of tasks, which will be ordered by the natural ordering of String.
+Let’s create another PriorityQueue which orders the tasks in reverse order of natural ordering. So we need to pass a Comparator:
+
+
+PriorityQueue reverseTasks=new PriorityQueue(Comparator.reverseOrder());
+reverseTasks.add("task1");
+reverseTasks.add("task4");
+reverseTasks.add("task3");
+reverseTasks.add("task2");
+reverseTasks.add("task5");
+Java PriorityQueue Methods
+Now, let’s take a look at all the methods available for PriorityQueue and use them:
+
+
+Boolean add(E e) – This method inserts the specified element in the queue.
+We have already added 5 tasks in our queue using this method.
+Comparator comparator() – This method returns the Comparator used to order the elements in this queue. It returns null if no comparator was specified and the queue is sorted according to the natural ordering of its elements.
+So, if we do:
+
+System.out.println(tasks.comparator());
+System.out.println(reverseTasks.comparator());
+The output will be:
+
+
+null
+java.util.Collections$ReverseComparator@15db9742
+boolean contains(Object o) – Returns true if the queue contains the specified element.
+Let’s check if “task3” belongs to the Priority queue tasks:
+
+System.out.println(tasks.contains("task3"));
+This prints:
+
+true
+boolean offer(E e) – Just like the add() method, this method also adds an element to the queue.
+The offer() and add() methods are actually a bit different for capacity constrained queues, but in case of PriorityQueue, both are same. Unlike add(), offer() does not throw an exception even if it fails to add the element in the queue.
+E peek() – Retrieves the head of this queue, or returns null if this queue is empty. In other words, it returns the element with highest priority.
+So the following code:
+
+System.out.println(tasks.peek());
+System.out.println(reverseTasks.peek());
+Gives us:
+
+task1
+task5
+E poll() – This method also retrieves the head of the queue(element with highest priority), or returns null if the queue is empty. But unlike peek(), it also removes the element.
+So, if we call poll():
+
+System.out.println(“Poll on tasks: ”+tasks.poll());
+System.out.println(“Poll on reverseTasks: ”+reverseTasks.poll());
+And then peek:
+
+
+System.out.println(“Peek on tasks: ”+tasks.peek());
+System.out.println(“Peek on reverseTasks: ”+reverseTasks.peek());
+We’ll have the following outptut:
+
+
+Poll on tasks: task1
+Poll on reverseTasks: task5
+Peek on tasks: task2
+Peek on reverseTasks: task4
+int	size() – Returns the number of elements in the queue.
+boolean remove(Object o) – Removes the specified element from the queue, if it’s present. If two same elements are present, it only removes one of them.
+Object[] toArray() – Returns an array containing all the elements in the queue.
+T[] toArray(T[] a) – Returns an array containing all the elements in the queue, and the type of the returned array is that of the specified array.
+Iterator iterator() – Returns an iterator for the queue.
+void clear() – Removes all of the elements from the queue.
+Apart from these, the PriorityQueue also inherits the methods from the Collection and Object classes.
+
+Java PriorityQueue Time Complexity
+For enqueing and dequeing methods, the time complexity is O(log(n))
+For the remove(Object) and contains(Object) methods, the time complexity is linear
+For the retrieval methods, it has constant time complexity
+This implementation of priority queue is not thread-safe. So, if we need synchronised access, we need to use PriorityBlockingQueue.

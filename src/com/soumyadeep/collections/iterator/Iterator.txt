@@ -1,0 +1,327 @@
+Java Iterator – Iterator in Java
+RAMBABU POSA 10 COMMENTS
+
+
+In this post we are going to discuss about some basics of Java Enumeration and in-depth discussion about Java Iterator. As Java Enumeration interface is deprecated, it is not recommended to use this in our applications.
+
+Table of Contents [hide]
+
+1 Post Brief Table of Content
+2 Java Four Cursors
+3 Java Enumeration Limitations
+4 Java Iterator
+5 Java Iterator Class Diagram
+6 Java Iterator Methods
+7 Java Iterator Basic Example
+8 Develop Custom Class Iterator
+9 How Java Iterator Works Internally?
+10 Advantages of Java Iterator
+11 Limitations of Java Iterator
+12 Similarities between Java Enumeration and Iterator
+13 Differences between Java Enumeration and Iterator
+Post Brief Table of Content
+In this post we are going to this discuss the following concepts about Java’s Iterator.
+
+Java Four Cursors
+Java Enumeration Limitations
+Java Iterator
+Java Iterator Class Diagram
+Java Iterator Methods
+Java Iterator Basic Example
+Develop Custom Class Iterator
+How Java Iterator Works Internally?
+Advantages of Java Iterator
+Limitations of Java Iterator
+Similarities between Java Enumeration and Iterator
+Differences between Java Enumeration and Iterator
+Java Four Cursors
+First of all, I would like to define what is a Java Cursor? A Java Cursor is an Iterator, which is used to iterate or traverse or retrieve a Collection or Stream object’s elements one by one.
+
+Java supports the following four different cursors.
+
+Enumeration
+Iterator
+ListIterator
+Spliterator
+
+
+Each Java cursor have some advantages and drawbacks. We will discuss some basics about Enumeration and full details about Iterator in this posts. We will discuss about ListIterator and Spliterator in my coming posts.
+
+
+Java Enumeration Limitations
+Java Enumeration is available since Java 1.0 and it has many limitations and not advisable to use in new projects.
+
+It is available since Java 1.0 and legacy interface.
+It is useful only for Collection Legacy classes.
+Compare to other Cursors, it has very lengthy method names: hasMoreElements() and nextElement().
+In CRUD Operations, it supports only READ operation. Does not support CREATE, UPDATE and DELETE operations.
+It supports only Forward Direction iteration. That’s why it is also know as Uni-Directional Cursor.
+It is not recommended to use it in new code base or projects.
+NOTE:- What is CRUD operations in Collection API?
+
+CREATE: Adding new elements to Collection object.
+READ: Retrieving elements from Collection object.
+UPDATE: Updating or setting existing elements in Collection object.
+DELETE: Removing elements from Collection object.
+To overcome all these issues, Java come-up with new Cursors: Iterator and ListIterator in Java 1.2. It has introduced a new type of Cursor: Spliterator in Java 1.8.
+
+We will discuss about Iterator with some suitable examples in this post.
+
+Java Iterator
+In Java, Iterator is an interface available in Collection framework in java.util package. It is a Java Cursor used to iterate a collection of objects.
+
+It is used to traverse a collection object elements one by one.
+It is available since Java 1.2 Collection Framework.
+It is applicable for all Collection classes. So it is also known as Universal Java Cursor.
+It supports both READ and REMOVE Operations.
+Compare to Enumeration interface, Iterator method names are simple and easy to use.
+Java Iterator Class Diagram
+As shown in the Class Diagram below, Java Iterator has four methods. We are already familiar with first four methods. Oracle Corp has added fourth method to this interface in Java SE 8 release.
+
+
+
+Java Iterator Methods
+In this section, we will discuss about Java Iterator methods in-brief. We will explore these methods in-depth with some useful examples in the coming section.
+
+boolean hasNext():Returns true if the iteration has more elements.
+E next(): Returns the next element in the iteration.
+default void remove(): Removes from the underlying collection the last element returned by this iterator.
+default void forEachRemaining(Consumer action): Performs the given action for each remaining element until all elements have been processed or the action throws an exception.
+Java Iterator Basic Example
+First discuss about how to get an Iterator object from a Collection. Each and every Collection class has the following iterator() method to iterate it’s elements.
+
+
+Iterator<E> iterator()
+It returns an iterator over the elements available in the given Collection object.
+
+Example-1:-
+
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+public class ExternalIteratorDemo 
+{
+  public static void main(String[] args) 
+  {
+	List<String> names = new LinkedList<>();
+	names.add("Rams");
+	names.add("Posa");
+	names.add("Chinni");
+	
+	// Getting Iterator
+	Iterator<String> namesIterator = names.iterator();
+		
+	// Traversing elements
+	while(namesIterator.hasNext()){
+		System.out.println(namesIterator.next());			
+	}	
+	
+  }
+}
+Example-2:-
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class InternalIteratorDemo 
+{
+  public static void main(String[] args) 
+  {
+	List<String> names = new LinkedList<>();
+	names.add("Rams");
+	names.add("Posa");
+	names.add("Chinni");
+		
+	for(String name: names){
+		System.out.println(name);			
+	}	
+	
+  }
+}
+If we observe the two above examples, both examples are doing the same thing. In Example-1, we have created Iterator object externally and retrieved List object elements one by one. In Example-2, we have Not created Iterator object externally. We are using Enhanced for loop to retrieve the List object elements one by one.
+
+Enhanced for loop uses Iterator object internally and do the same thing like External Iterator example. So both examples gives the same output as shown below.
+
+Output:-
+
+
+Rams
+Posa
+Chinni
+Develop Custom Class Iterator
+In previous section, we have discussed about how Collection API has implemented the iterator() method to iterate it’s elements with or without using Enhanced For Loop.
+
+In this section, we will discuss about how to provide similar kind of functionality for a User-Defined or Custom classes. We should follow these instructions to provide this functionality:
+
+Define Custom class.
+Define Collection class to this Custom class.
+This Collection class should implement Iterable interface with Custom class as Type parameter.
+This Collection class should provide implementation of Iterable interface method: iterator().
+If we implement these instructions to our Custom class, then it’s ready to use Enhanced For Loop or external Iterator object to iterate it’s elements.
+
+Let us develop a simple example to understand these instructions clearly.
+
+Example:-
+
+
+public class Employee {
+
+  private int empid;
+  private String ename;
+  private String designation;
+  private double salary;
+	
+  public Employee(int empid,String ename,String designation,double salary){
+	this.empid = empid;
+	this.ename = ename;
+	this.designation = designation;
+	this.salary = salary;
+  }
+	
+  public int getEmpid() {
+	return empid;
+  }
+	
+  public String getEname() {
+	return ename;
+  }
+
+  public String getDesignation() {
+	return designation;
+  }
+	
+  public double getSalary() {
+	return salary;
+  }	
+	
+  @Override
+  public String toString(){
+	return empid + "\t" + ename + "\t" + designation + "\t" + salary;	
+  }
+	
+}
+
+import java.util.*;
+
+public class Employees implements Iterable{
+
+	private List<Employee> emps = null;
+	
+	public Employees(){
+		emps = new ArrayList<&glt;();
+		emps.add(new Employee(1001,"Rams","Lead", 250000L));
+		emps.add(new Employee(1002,"Posa","Dev", 150000L));
+		emps.add(new Employee(1003,"Chinni","QA", 150000L));
+	}
+	
+	@Override
+	public Iterator<Employee> iterator() {
+		return emps.iterator();
+	}
+
+}
+
+public class EmployeesTester {
+	public static void main(String[] args) {
+		Employees emps = new Employees();
+		for(Employee emp : emps){
+			System.out.println(emp);
+		}
+	}
+}
+Output:-
+
+
+1001	Rams	Lead	250000.0
+1002	Posa	Dev	150000.0
+1003	Chinni	QA	150000.0
+How Java Iterator Works Internally?
+In this section, we will try to understand how Java Iterator and it’s methods works internally. Let us take the following LinkedList object to understand this functionality.
+
+
+List<String> names = new LinkedList<>();
+names.add("E-1");
+names.add("E-2");
+names.add("E-3");
+.
+.
+.
+names.add("E-n");
+Now create an iterator object on List object as shown below:
+
+
+
+Iterator<String> namesIterator = names.iterator();
+Let us assume “namesIterator” iterator looks like below:
+
+
+
+Here Iterator’s Cursor is pointing to the before first element of the List. Now we run the following code snippet.
+
+
+  namesIterator.hasNext();
+  namesIterator.next();
+
+
+When we run the above code snippet, Iterator’s Cursor points to the first element in the List as shown in the above diagram. Then run the following code snippet.
+
+
+  namesIterator.hasNext();
+  namesIterator.next();
+
+
+When we run the above code snippet, Iterator’s Cursor points to the second element in the List as shown in the above diagram. Do this process to reach the Iterator’s Cursor to the end element of the List.
+
+
+
+After reading the final element, if we run the below code snippet, it returns “false” value.
+
+
+  namesIterator.hasNext();
+
+
+As Iterator’s Cursor points to the after the final element of the List, hasNext() method returns false value.
+
+After observing all these diagrams, we can say that Java Iterator supports only Forward Direction Iteration as shown in the below diagram. So it is also know as Uni-Directional Cursor.
+
+
+
+Advantages of Java Iterator
+Compare to Enumeration interface, Java Iterator has the following advantages or benefits.
+
+We can use it for any Collection class.
+It supports both READ and REMOVE operations.
+It is an Universal Cursor for Collection API.
+Method names are simple and easy to use them.
+Limitations of Java Iterator
+However, Java Iterator has the following limitations or drawbacks.
+
+In CRUD Operations, it does NOT support CREATE and UPDATE operations.
+It supports only Forward direction iteration that is Uni-Directional Iterator.
+Compare to Spliterator, it does NOT support iterating elements parallel that means it supports only Sequential iteration.
+Compare to Spliterator, it does NOT support better performance to iterate large volume of data.
+To overcome these limitations, Java has introduced two more Cursors: ListIterator and Spliterator. We will discuss about these two cursors in my coming posts.
+
+Similarities between Java Enumeration and Iterator
+In section we will discuss about similarities between two Java Cursors: Java Enumeration and Iterator
+
+Both are Java Cursors.
+Both are used to iterate a Collection object elements one by one.
+Both supports READ or Retrieval operation.
+Both are Uni-directional Java Cursors that means supports only Forward Direction Iteration.
+Differences between Java Enumeration and Iterator
+The following table describes the differences between Java Enumeration and Iterator:
+
+ENUMERATION	ITERATOR
+Introduced in Java 1.0	Introduced in Java 1.2
+Legacy Interface	Not Legacy Interface
+It is used to iterate only Legacy Collection classes.	We can use it for any Collection class.
+It supports only READ operation.	It supports both READ and DELETE operations.
+It’s not Universal Cursor.	Its a Universal Cursor.
+Lengthy Method names.	Simple and easy to use method names.
+That’s all of about Iterator in Java. I hope these Java Iterator theory and examples will help you in getting started with Iterator programming.
+
+Thank you for reading my tutorials. Please drop me a comment if you like my tutorials or have any issues or suggestions or any type errors.

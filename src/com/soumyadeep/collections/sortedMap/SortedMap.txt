@@ -1,0 +1,171 @@
+Java SortedMap – Sorted Map in Java
+PANKAJ LEAVE A COMMENT
+
+
+Java SortedMap is a Map that provides total ordering on its keys.
+
+Table of Contents [hide]
+
+1 Java SortedMap
+1.1 Java SortedMap Constructors
+1.2 Java SortedMap implementation
+1.3 Java SortedMap Methods Compared to Map, several additional methods are provided to take advantage of ordering. Let’s look at each methods provided. Comparator comparator(): Returns the comparator instance used to order keys in the map. If keys are sorted as per their natural ordering, it returns null. Set<Map.Entry> entrySet(): Returns a Set of mappings contained in the map. K firstKey(): Returns the first(lowest) key in the map. K lastKey(): Returns the last(highest) key in the map. Set keySet(): Returns a Set containing all keys of the map. SortedMap headMap(K toKey): Returns a view of the portion of the map whose keys are less than toKey. SortedMap tailMap(K fromKey): Returns a view of the portion of the map whose keys are greater than or equal to fromKey. Collection values(): Returns a Collection view of the values contained in this map. Note that Set returned in above methods is a view of the actual Set. Changes done on these views are reflected on actual data structure as well. Java SortedMap Implementation
+Java SortedMap
+Java SortedMap can either be ordered according to the natural ordering of its keys or by providing a Comparator while creating map.
+
+If we don’t provide any Comparator (which should be able to accept key of the map) while creating SortedMap, all key elements of map must have implemented Comparable interface to ensure ordering.
+
+Java SortedMap
+
+Java SortedMap Constructors
+As per the specification, all general-purpose sorted map implementation classes should provide following standard constructors:
+
+A void (no arguments) constructor: It should create a sorted map which is sorted according to the natural ordering of its keys.
+A constructor with an argument of type Comparator: It should create a sorted map whose keys are sorted according to specified comparator.
+A constructor with an argument of type Map: It should create a sorted map with elements of provided map which is sorted according to the natural ordering of its keys.
+A constructor with an argument of type SortedMap: It should behave as a copy constructor and create a new sorted map with the same elements and the same ordering of provided sorted map.
+Of course, it’s impossible to enforce these recommendation as interfaces can’t specify constructors unlike methods.
+
+
+Java SortedMap implementation
+TreeMap is a widely used implementation of SortedMap. Let’s create its instances using different constructors mentioned above:
+
+
+SortedMap<String, PersonalDetails> personMap = new TreeMap<>();
+personMap.put("Dan Brown", new PersonalDetails("Writer", LocalDate.of(1964, 6, 22), "New Hampshire"));
+personMap.put("Ayn Rand", new PersonalDetails("Writer", LocalDate.of(1905, 2, 2), "Saint Petersburg"));
+personMap.put("Devdutt Pattanaik", new PersonalDetails("Mythologist", LocalDate.of(1970, 12, 11), "Mumbai"));
+
+personMap.keySet().forEach(key -> {
+	System.out.println(key + " -> " + personMap.get(key));
+});
+PersonalDetails implementation:
+
+
+package com.journaldev.sortedmap;
+
+import java.time.LocalDate;
+
+class PersonalDetails {
+	String occupation;
+	LocalDate dataOfBirth;
+	String city;
+
+	public PersonalDetails(String occupation, LocalDate dataOfBirth, String city) {
+		this.occupation = occupation;
+		this.dataOfBirth = dataOfBirth;
+		this.city = city;
+	}
+
+	@Override
+	public String toString() {
+		return this.occupation + ", from " + this.city;
+	}
+}
+It will print the map according to natural order of its keys. In this case, key type is String, which implements Comparable interface.
+
+Java SortedMap Example, Java Sorted Map
+
+Instead of no-argument constructor, if we provide Comparator implementation in the constructor argument, the output would have different ordering. Let’s write a lambda expression to provide compareTo implementation of Comparator interface. Let’s say we want to sort the keys as per key lengths in their descending order:
+
+
+SortedMap<String, PersonalDetails> personMap = new TreeMap<>((s1, s2) -> s2.length() - s1.length());
+In this case, output will be like below.
+
+
+Devdutt Pattanaik -> Mythologist, from Mumbai
+Dan Brown -> Writer, from New Hampshire
+Ayn Rand -> Writer, from Saint Petersburg
+Now we’ll create a sorted map by passing another map object or a different sorted map.
+
+
+
+Map<String, PersonalDetails> map = new HashMap<>();
+map.put("Dan Brown", 
+  new PersonalDetails("Writer", LocalDate.of(1964, 6, 22), "New Hampshire"));
+map.put("Ayn Rand",
+  new PersonalDetails("Writer", LocalDate.of(1905, 2, 2), "Saint Petersburg"));
+map.put("Devdutt Pattanaik",
+  new PersonalDetails("Mythologist", LocalDate.of(1970, 12, 11), "Mumbai"));
+
+SortedMap<String, PersonalDetails> sortedMap = new TreeMap<>(map);
+sortedMap.keySet().forEach(key -> {
+    System.out.println(key + " -> " + sortedMap.get(key));
+});
+
+System.out.println("\nSorted Map constructed using another sorted map:");
+SortedMap<String, PersonalDetails> copiedMap = new TreeMap<>(sortedMap);
+copiedMap.keySet().forEach(key -> {
+    System.out.println(key + " -> " + copiedMap.get(key));
+});
+Output:
+
+
+Ayn Rand -> Writer, from Saint Petersburg
+Dan Brown -> Writer, from New Hampshire
+Devdutt Pattanaik -> Mythologist, from Mumbai
+
+Sorted Map constructed using another sorted map:
+Ayn Rand -> Writer, from Saint Petersburg
+Dan Brown -> Writer, from New Hampshire
+Devdutt Pattanaik -> Mythologist, from Mumbai
+Java SortedMap Methods
+Compared to Map, several additional methods are provided to take advantage of ordering. Let’s look at each methods provided.
+
+Comparator comparator(): Returns the comparator instance used to order keys in the map. If keys are sorted as per their natural ordering, it returns null.
+Set<Map.Entry> entrySet(): Returns a Set of mappings contained in the map.
+K firstKey(): Returns the first(lowest) key in the map.
+K lastKey(): Returns the last(highest) key in the map.
+Set keySet(): Returns a Set containing all keys of the map.
+SortedMap headMap(K toKey): Returns a view of the portion of the map whose keys are less than toKey.
+SortedMap tailMap(K fromKey): Returns a view of the portion of the map whose keys are greater than or equal to fromKey.
+Collection values(): Returns a Collection view of the values contained in this map.
+Note that Set returned in above methods is a view of the actual Set. Changes done on these views are reflected on actual data structure as well.
+
+Java SortedMap Implementation
+Let’s explore all of these methods one by one. We’ll create a sorted map by passing a comparator and the comparator() method will return the same comparator.
+
+
+SortedMap sortedMap = new TreeMap(Comparator.reverseOrder());
+Comparator comparator = sortedMap.comparator();
+Now, Let’s get a view of the mappings in the map. It’ll get us a Set of Map.Entry.
+
+
+SortedMap<String, PersonalDetails> sortedMap = new TreeMap<>(Comparator.reverseOrder());
+
+sortedMap.put("Dan Brown", new PersonalDetails("Writer", LocalDate.of(1964, 6, 22), "New Hampshire"));
+sortedMap.put("Ayn Rand", new PersonalDetails("Writer", LocalDate.of(1905, 2, 2), "Saint Petersburg"));
+sortedMap.put("Devdutt Pattanaik", new PersonalDetails("Mythologist", LocalDate.of(1970, 12, 11), "Mumbai"));
+
+Set<Map.Entry<String, PersonalDetails>> entrySet = sortedMap.entrySet();
+
+entrySet.forEach(entry -> {
+	System.out.println(entry.getKey() + "->" + entry.getValue());
+});
+Iterating through the entrySet will print:
+
+
+Devdutt Pattanaik->Mythologist, from Mumbai
+Dan Brown->Writer, from New Hampshire
+Ayn Rand->Writer, from Saint Petersburg
+keySet() method will return the Set of keys, whereas values() will return the Collection of values (In our case, value type is PersonalDetails).
+
+
+sortedMap.keySet().forEach(System.out::println);
+Collection<PersonalDetails> values = sortedMap.values();
+values.forEach(System.out::println);
+Also, there are methods available to get first key, last key and portion of the map which contains keys less than or greater than equal to a particular key.
+
+
+System.out.println("Smallest and largest keys of the map:");
+System.out.println(sortedMap.firstKey());
+System.out.println(sortedMap.lastKey());
+
+System.out.println("Head map containing keys whose values are less than D.");
+SortedMap headMap = sortedMap.headMap("D");
+headMap.keySet().forEach(System.out::println);
+
+System.out.println("Tail map containing keys whose values are greater than or equal to D:");
+SortedMap tailMap = sortedMap.tailMap("D");
+tailMap.keySet().forEach(System.out::println);
+That’s all for Java SortedMap or SortedMap in java.

@@ -1,0 +1,96 @@
+Java Spliterator
+
+Java Spliterator is one of the four iterators – Enumeration, Iterator, ListIterator and Spliterator.
+
+Table of Contents [hide]
+
+1 Java Spliterator
+1.0.1 Main Functionalities of Spliterator
+1.1 Java Spliterator Class Diagram
+1.2 Java Spliterator Methods
+1.3 Java Spliterator Example
+1.4 Advantages of Spliterator
+1.5 Iterator vs Spliterator
+Java Spliterator
+Like Iterator and ListIterator, Spliterator is a Java Iterator, which is used to iterate elements one-by-one from a List implemented object.
+
+Some important points about Java Spliterator are:
+
+Java Spliterator is an interface in Java Collection API.
+Spliterator is introduced in Java 8 release in java.util package.
+It supports Parallel Programming functionality.
+We can use it for both Collection API and Stream API classes.
+It provides characteristics about Collection or API objects.
+We can NOT use this Iterator for Map implemented classes.
+It uses tryAdvance() method to iterate elements individually in multiple Threads to support Parallel Processing.
+It uses forEachRemaining() method to iterate elements sequentially in a single Thread.
+It uses trySplit() method to divide itself into Sub-Spliterators to support Parallel Processing.
+Spliterator supports both Sequential and Parallel processing of data.
+Spliterator itself does not provide the parallel programming behavior. However, it provides some methods to support it. Developers should utilize Spliterator interface methods and implement parallel programming by using Fork/Join Framework (one good approach).
+
+Main Functionalities of Spliterator
+Splitting the source data.
+Processing the source data.
+Java Spliterator
+
+Java Spliterator Class Diagram
+The following diagram shows the Class Diagram of Java Spliterator interface. It has many fields and methods.
+
+
+Java Spliterator Class Diagram
+
+Java Spliterator Methods
+In this section, we will list out all Java Spliterator methods one by one with some useful description.
+
+int characteristics(): Returns a set of characteristics of this Spliterator and its elements.
+long estimateSize(): Returns an estimate of the number of elements that would be encountered by a forEachRemaining() traversal, or returns Long.MAX_VALUE if infinite, unknown, or too expensive to compute.
+default void forEachRemaining(Consumer action): Performs the given action for each remaining element, sequentially in the current thread, until all elements have been processed or the action throws an exception.
+default Comparator getComparator(): If this Spliterator’s source is SORTED by a Comparator, returns that Comparator.
+default long getExactSizeIfKnown(): Convenience method that returns estimateSize() if this Spliterator is SIZED, else -1.
+default boolean hasCharacteristics(int characteristics): Returns true if this Spliterator’s characteristics() contain all of the given characteristics.
+boolean tryAdvance(Consumer action): If a remaining element exists, performs the given action on it, returning true; else returns false.
+Spliterator trySplit(): If this spliterator can be partitioned, returns a Spliterator covering elements, that will, upon return from this method, not be covered by this Spliterator.
+Java Spliterator Example
+In this section, we will discuss about how to create Java Spliterator object using spliterator() and will develop simple example.
+
+
+
+import java.util.Spliterator;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SpliteratorSequentialIteration
+{
+  public static void main(String[] args) 
+  {
+	List<String> names = new ArrayList<>();
+	names.add("Rams");
+	names.add("Posa");
+	names.add("Chinni");
+		
+	// Getting Spliterator
+	Spliterator<String> namesSpliterator = names.spliterator();
+		
+	// Traversing elements
+	namesSpliterator.forEachRemaining(System.out::println);			
+   }
+}
+Output:-
+
+
+Rams
+Posa
+Chinni
+If we observe the above program and output, we can easily understand that this Spliterator.forEachRemaining() method works in the same way as ArrayList.foreach(). Yes, both works in similar way.
+
+Advantages of Spliterator
+Unlike Iterator and ListIterator, it supports Parallel Programming functionality.
+Unlike Iterator and ListIterator, it supports both Sequential and Parallel Processing of data.
+Compare to other Iterators, it provides better performance.
+Iterator vs Spliterator
+ITERATOR	SPLITERATOR
+Introduced in Java 1.2.	Introduced in Java 1.8.
+It is an Iterator for whole Collection API.	It is an Iterator for both Collection and Stream API, except Map implemented classes.
+It is an Universal Iterator.	It is NOT an Universal Iterator.
+It does NOT support Parallel Programming.	It supports Parallel Programming.
+That’s all about Spliterator in Java.

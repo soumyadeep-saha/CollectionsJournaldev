@@ -1,0 +1,134 @@
+Java SE 9: Factory Methods for Immutable Set
+RAMBABU POSA LEAVE A COMMENT
+
+
+Table of Contents [hide]
+
+1 Post Brief Table of Content:
+2 Introduction
+3 Java SE 8: Immutable Empty Set
+4 Java SE 9: Immutable Empty Set
+5 Java SE 8: Immutable Non-Empty Set
+6 Java SE 9: Immutable Non-Empty Set
+7 Java SE 9: Immutable Non-Empty Set With Var-Args
+Post Brief Table of Content:
+Introduction
+Java SE 8: Immutable Empty Set
+Java SE 9: Immutable Empty Set
+Java SE 8: Immutable Non-Empty Set
+Java SE 9: Immutable Non-Empty Set
+Java SE 9: Immutable Non-Empty Set With Var-Args
+Introduction
+Oracle Corporation is going to release Java New Version: Java SE 9 around March 2017. So, I would like to deliver a series of Posts on Java SE 9 New Features. It is my sixth post in this series.
+
+I have already delivered couple of posts on Java SE 9 New Features. Before going through this post, please read them. It is the continuation of my previous post: Java SE 9: Factory Methods for Immutable List.
+
+In this post, we are going to discuss one more Java SE 9 New Feature: “Factory Methods for Immutable Set” with some simple and suitable examples.
+
+Java SE 8: Immutable Empty Set
+In Java SE 8 and earlier Versions, if we want to create an empty Immutable or Unmodifiable Set, we should use Collections class utility method: unmodifiableSet as shown below:
+
+Empty Set Example:-
+
+
+ Set<String> emptySet = new HashSet<>();
+ Set<String> immutableSet = Collections.unmodifiableSet(emptySet);
+Here we can observe that it is very tedious and verbose process. Let us see the same thing in Java SE 9 now.
+
+
+NOTE:- Diamond Operator does NOT work in Java SE 6 and earlier versions. Rest of the code is same for all Java versions.
+
+Java SE 9: Immutable Empty Set
+To overcome those shortcomings, Java SE 9 has introduced a couple of useful methods in Set interface so that we do not need to use all these tedious steps to create Immutable Empty Set.
+
+If we go through the Java SE 9 Set API, we can find the below method signature in Set interface.
+Empty Set API Utility
+
+
+ static <E> Set<E> of()
+It is used to create an empty Immutable Set (a Set with zero elements).
+
+Empty Set Example:-
+
+
+ Set<String> immutableSet = Set.of();
+Here we can observe that it is very easy to create an empty Immutable Set in Java SE 9.
+
+Java SE 8: Immutable Non-Empty Set
+In this section, we will see how to create Immutable Non-Empty Set in Java SE 8 and earlier Versions. We use same unmodifiableSet method from Collections class to create an Immutable Non-Empty Set as shown below:
+
+Non-Empty Set Example:-
+
+
+ Set<String> nonemptySet = new HashSet<>();
+ nonemptySet.add("one");
+ nonemptySet.add("two");
+ nonemptySet.add("three");
+ Set<String> immutableSet = Collections.unmodifiableSet(nonemptySet);
+NOTE:- Diamond Operator does NOT work in Java SE 6 and earlier versions. Rest of the code is same for all Java versions.
+
+
+Here we can observe that it is very tedious and verbose process. Let us see the same thing in Java SE 9 now.
+
+Java SE 9: Immutable Non-Empty Set
+In this section, we will see how to create Immutable Non-Empty Set in Java SE 9 Version. If we go through the Java SE 9 Set Interface API, we will see a set of overloaded methods as shown below:
+
+Non-Empty Set API Utility
+
+
+static <E> Set<E> of(E e1)
+static <E> Set<E> of(E e1,E e2)	
+static <E> Set<E> of(E e1,E e2,E e3)
+static <E> Set<E> of(E e1,E e2,E e3,E e4)
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5)	
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5,E e6)	
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7)	
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8)	
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8,E e9)	
+static <E> Set<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8,E e9,E e10)
+Non-Empty Set Example:-
+
+
+ Set<String> immutableSet = Set.of("one","two","three");
+It is very simple and no-verbosity in this code right. Very nice stuff!
+
+Test the above code in Java SE 9 REPL:
+
+
+jshell> Set<String> immutableSet = Set.of("one","two","three")
+immutableSet ==> [one, two, three]
+Here we can observe that it is very easy to create an Non-empty Immutable Set in Java SE 9.
+
+Java SE 9: Immutable Non-Empty Set With Var-Args
+Oracle Corp has introduced one more Set.of() method with Var-args syntax. The following is a Var-Args method (Variable Number of arguments method) used to create an Non-empty Immutable Set in Java SE 9:
+
+
+static <E> Set<E> of(E... elements)  
+It is used to create an Immutable Set with array of elements as shown below:
+
+Non-Empty Set Example:-
+
+
+ String[] nameArr =  { "one", "two", "three"};
+ Set<String[]> set= Set.<String[]>of(nameArr);
+Test this with Java SE 9 REPL:
+
+
+jshell> String[] nameArr =  { "one", "two", "three"}
+nameArr ==> String[3] { "one", "two", "three" }
+
+jshell> Set<String[]> set = Set.<String[]>of(nameArr);
+set ==> [[Ljava.lang.String;@56ef9176]
+
+jshell> set
+set ==> [[Ljava.lang.String;@56ef9176]
+Here we have created an Immutable Set with Array of String Elements.
+
+NOTE:-
+Characteristics of a Immutable Set are similar to Immutable List. You can find those information in detail here: Java SE 9: Factory Methods for Immutable List.
+
+That’s it all about “Java SE 9: Factory Methods for Immutable Set” concept. We will discuss some more Java SE 9 New Features in my coming posts.
+
+Please drop me a comment if you like my post or have any issues/suggestions/type errors.
+
+Thank you for reading my tutorials.

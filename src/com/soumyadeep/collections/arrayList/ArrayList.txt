@@ -1,0 +1,535 @@
+Java ArrayList
+PANKAJ 5 COMMENTS
+
+
+Java ArrayList is one of the most widely used Collection class. java.util.ArrayList class implements java.util.List interface. Java ArrayList also implements RandomAccess, Cloneable and Serializable interfaces. Java ArrayList class extends AbstractList class that is the skeleton implementation of List interface.
+
+Table of Contents [hide]
+
+1 Java ArrayList
+1.1 Java ArrayList Constructors
+1.2 Java ArrayList Methods
+2 Java ArrayList Example
+2.1 Java ArrayList common operations
+2.2 Java ArrayList forEach
+2.3 Java ArrayList Iterator
+2.4 Java ArrayList ListIterator
+2.5 Java ArrayList removeIf
+2.6 Java ArrayList replaceAll
+2.7 Java ArrayList subList
+2.8 Java ArrayList Sorting
+2.9 Thread Safe ArrayList
+Java ArrayList
+java ArrayList, ArrayList, java.util.ArrayList, ArrayList example
+
+Java ArrayList is the resizable array implementation of List interface, that means it starts with default size and grows automatically when more data is added into array list. Some important points about Java ArrayList are:
+
+Java ArrayList is almost similar to Vector except that it’s unsynchronized, so performance is better in single threaded environment.
+Java ArrayList is not thread safe, so special care must be given when used in multithreaded environment.
+Java ArrayList can contain duplicate values, it also allows “null” value.
+Objects in java ArrayList are added in order. So you can always retrieve the first object by index 0.
+Java ArrayList default capacity is defined as 10. However we can change the default capacity through it’s constructor or by calling ensureCapacity(int minCapacity) method.
+Java ArrayList Iterator and ListIterator implementation is fail-fast. If the list structure is modified after creating the iterator in any other way except the iterator add or remove methods, it will throw ConcurrentModificationException.
+Java ArrayList provides random access to it’s elements because it works on index. We can retrieve any element through it’s index.
+Java ArrayList supports Generics and it’s the recommended way to create an ArrayList.
+
+List list = new ArrayList(); //not recommended
+List<String> list1 = new ArrayList<String>(); // recommended way
+Java ArrayList Constructors
+There are three constructors in Java ArrayList class.
+
+public ArrayList(): Most widely used Java ArrayList constructor. This ArrayList constructor will return an empty list with initial capacity of 10.
+public ArrayList(int initialCapacity): This ArrayList constructor will return an empty list with initial capacity as specified by the initialCapacity argument. This constructor is useful when you know that your list will contain huge data and you want to save time of reallocation by providing a large value of initial capacity. If the initialCapacity argument is negative, it will throw IllegalArgumentException.
+public ArrayList(Collection<? extends E> c): This ArrayList constructor will return a list containing the elements of the specified collection, in the order they are returned by the collection’s iterator. It will throw famous NullPointerException if the specified collection argument is null.
+Below is a simple code snippet showing Java ArrayList constructors in use.
+
+
+// Java ArrayList default constructor
+List<String> vowels = new ArrayList<String>();
+
+//Java ArrayList constructor with initial capacity
+List<String> dictionaryWordsList = new ArrayList<String>(50000);
+
+vowels.add("A");
+vowels.add("B");
+vowels.add("C");
+vowels.add("D");
+vowels.add("E");
+
+//Creating my list from different collection source
+List<String> myList = new ArrayList<String>(vowels);
+Java ArrayList Methods
+Java ArrayList contains many methods that we use regularly.
+
+
+public boolean add(E e): Appends the specified element to the end of this list.
+public void add(int index, E element): Inserts the specified element at the specified position in the list. Shifts the element currently at that position (if any) and any subsequent elements to the right. If index is greater than list size or negative, it will throw IndexOutOfBoundsException.
+public boolean addAll(Collection<? extends E> c): Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection’s Iterator. This operation throws NullPointerException if the specified collection is null.
+public boolean addAll(int index, Collection<? extends E> c): Inserts all of the elements in the specified collection into this list, starting at the specified position. Shifts the element currently at that position (if any) and any subsequent elements to the right (increases their indices). This method will throw IndexOutOfBoundsException if the index value is greater than list size or negative. This method also throws NullPointerException if specified collection is null.
+public boolean contains(Object o): Returns true if this list contains the specified element.
+public void clear(): Removes all of the elements from this list.
+public void ensureCapacity(int minCapacity): Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument.
+public void forEach(Consumer<? super E> action): Performs the given action for each element of the Iterable until all elements have been processed or the action throws an exception.
+public E get(int index): Returns the element at the specified position in this list.
+public boolean isEmpty(): Returns true if this list contains no elements.
+public int indexOf(Object o): Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
+public Iterator<E> iterator(): Returns an iterator over the elements in this list in proper sequence. The returned iterator is fail-fast.
+public int lastIndexOf(Object o): Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
+public ListIterator<E> listIterator(): Returns a list iterator over the elements in this list (in proper sequence). The returned list iterator is fail-fast.
+public ListIterator<E> listIterator(int index): Returns a list iterator over the elements in this list (in proper sequence), starting at the specified position in the list. The specified index indicates the first element that would be returned by an initial call to next. An initial call to previous would return the element with the specified index minus one. This method throws IndexOutOfBoundsException if index value is greater than list size or negative.
+public E remove(int index): Removes the element at the specified position in this list. Shifts any subsequent elements to the left (subtracts one from their indices).
+public boolean remove(Object o): Removes the first occurrence of the specified element from this list, if it is present. If the list does not contain the element, it is unchanged.
+public boolean removeAll(Collection<E> c): Removes from this list all of its elements that are contained in the specified collection.
+public boolean retainAll(Collection<E> c): Retains only the elements in this list that are contained in the specified collection. In other words, removes from this list all of its elements that are not contained in the specified collection.
+public boolean removeIf(Predicate<? super E> filter): Removes all of the elements of this collection that satisfy the given predicate.
+public void replaceAll(UnaryOperator<E> operator): Replaces each element of this list with the result of applying the operator to that element.
+public int size(): Returns the number of elements in this list.
+public E set(int index, E element): Replaces the element at the specified position in this list with the specified element.
+public List<E> subList(int fromIndex, int toIndex): Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive. The returned list is backed by this list, so non-structural changes in the returned list are reflected in this list, and vice-versa.
+public Spliterator<E> spliterator(): Creates a late-binding and fail-fast Spliterator over the elements in this list.
+public void sort(Comparator<? super E> c): Sorts this list according to the order induced by the specified Comparator.
+public void trimToSize(): Trims the capacity of this ArrayList instance to be the list’s current size. An application can use this operation to minimize the storage of an ArrayList instance.
+public Object[] toArray(): Returns an array containing all of the elements in this list in proper sequence (from first to last element). The returned array will be “safe” in that no references to it are maintained by this list. (In other words, this method must allocate a new array). The caller is thus free to modify the returned array.
+public <T> T[] toArray(T[] a): Returns an array containing all of the elements in this list in proper sequence. If the list fits in the specified array, it is returned as is. Otherwise, a new array is allocated with the runtime type of the specified array and the size of this list.
+Java ArrayList Example
+Let’s have a look at the ArrayList methods example through some programs.
+
+Java ArrayList common operations
+Below is a simple program for Arraylist example showing commonly used methods.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Java ArrayList Example Program
+ * 
+ * @author pankaj
+ *
+ */
+public class ArrayListExample {
+
+	public static void main(String args[]) {
+		List<String> letters = new ArrayList<String>();
+		
+		//add example
+		letters.add("A");
+		letters.add("C");
+		letters.add("D");
+		
+		//let's insert B between A and C
+		letters.add(1,"B");
+		System.out.println(letters);
+		
+		List<String> list = new ArrayList<String>();
+		list.add("E");list.add("H");
+		
+		//appending list elements to letters
+		letters.addAll(list);
+		System.out.println(letters);
+		
+		//clear example to empty the list
+		list.clear();
+		
+		list.add("F");list.add("G");
+		
+		//inserting list inside letters to get right sequence
+		letters.addAll(5, list);
+		System.out.println(letters);
+		
+		//contains example
+		System.out.println("Letters list contains E ? "+letters.contains("E"));
+		System.out.println("Letters list contains Z ? "+letters.contains("Z"));
+		
+		//ensureCapacity example, it's ArrayList method, so object should be defined like below.
+		ArrayList<String> tempList = new ArrayList<>();
+		tempList.ensureCapacity(1000);
+		
+		//get example
+		String e = letters.get(4);
+		System.out.println("Letter at 5th place: "+e);
+		
+		//tempList is empty?
+		System.out.println("tempList is empty ? "+tempList.isEmpty());
+		
+		//indexOf example
+		System.out.println("First index of D = "+letters.indexOf("D"));
+		System.out.println("Last index of D = "+letters.lastIndexOf("D"));
+		
+		//remove examples
+		System.out.println(letters);
+		String removed = letters.remove(3);
+		System.out.println("After removing '"+removed+"' letters contains "+letters);
+		
+		//remove first occurrence of H
+		boolean isRemoved = letters.remove("H");
+		System.out.println("H removed? "+isRemoved+". Letters contains "+letters);
+		System.out.println("list contains "+list);
+		
+		//remove all matching elements between letters and list
+		letters.removeAll(list);
+		System.out.println(letters);
+		
+		//retainAll example
+		list.clear();list.add("A");list.add("B");list.add("C");
+		letters.retainAll(list);
+		System.out.println("letters elements after retainAll operation: "+letters);
+		
+		//size example
+		System.out.println("letters ArrayList size = "+letters.size());
+		
+		//set example
+		letters.set(2, "D");
+		System.out.println(letters);
+		
+		//toArray example
+		String[] strArray = new String[letters.size()];
+		strArray = letters.toArray(strArray);
+		System.out.println(Arrays.toString(strArray));
+	}
+}
+Output of above program is given below.
+
+
+
+[A, B, C, D]
+[A, B, C, D, E, H]
+[A, B, C, D, E, F, G, H]
+Letters list contains E ? true
+Letters list contains Z ? false
+Letter at 5th place: E
+tempList is empty ? true
+First index of D = 3
+Last index of D = 3
+[A, B, C, D, E, F, G, H]
+After removing 'D' letters contains [A, B, C, E, F, G, H]
+H removed? true. Letters contains [A, B, C, E, F, G]
+list contains [F, G]
+[A, B, C, E]
+letters elements after retainAll operation: [A, B, C]
+letters ArrayList size = 3
+[A, B, D]
+[A, B, D]
+Java ArrayList forEach
+Java ArrayList forEach method was added in Java 8. It’s useful when you want to perform same action on all the elements. The method argument Consumer is a functional interface, so we can use lambda expressions too. Below is an example of forEach method showing the old school way as well as lambda expression way.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class ArrayListForEachExample {
+
+	public static void main(String[] args) {
+		
+		List<String> stocks = new ArrayList<>();
+		stocks.add("Google"); stocks.add("Apple");
+		stocks.add("Microsoft"); stocks.add("Facebook");
+		
+		Consumer<Object> consumer = new ArrayListForEachExample().new MyConsumer();
+		
+		stocks.forEach(consumer);
+		
+		//lambda style
+		stocks.forEach(x -> {System.out.println("Processed "+x);});
+		
+	}
+
+	class MyConsumer implements Consumer<Object>{
+
+		@Override
+		public void accept(Object t) {
+			System.out.println("Processing "+t);
+		}
+		
+	}
+}
+Output produced by ArrayList forEach example program is:
+
+
+Processing Google
+Processing Apple
+Processing Microsoft
+Processing Facebook
+Processed Google
+Processed Apple
+Processed Microsoft
+Processed Facebook
+Java ArrayList Iterator
+Iterator is an interface in Java Collections framework. ArrayList provides fail-fast iterator implementation. When you want to perform some operation on all the list elements, you should use Iterator. If any structural modification is made to the list while iterating, it’s next() operation will throw ConcurrentModificationException. Below is a simple example of ArrayList iterator.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class ArrayListIteratorExample {
+
+	public static void main(String[] args) {
+
+		List<Integer> ints = new ArrayList<>();
+		for(int i=0; i<10; i++) ints.add(i);
+		
+		Iterator<Integer> it = ints.iterator();
+		
+		//simple iteration
+		while(it.hasNext()){
+			int x = (int) it.next();
+			System.out.print(x + ", ");
+		}
+		System.out.println("\n"+ints);
+		
+		//modification of list through iterator
+		it = ints.iterator();
+		while(it.hasNext()){
+			int x = (int) it.next();
+			if(x%2 ==0) it.remove();
+		}
+		System.out.println(ints);
+		
+		//changing list structure while iterating
+		it = ints.iterator();
+		while(it.hasNext()){
+			int x = (int) it.next(); //ConcurrentModificationException here
+			if(x==5) ints.add(20);
+		}
+	}
+
+}
+Output produced by above ArrayList iterator example program is:
+
+
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[1, 3, 5, 7, 9]
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
+	at java.util.ArrayList$Itr.next(ArrayList.java:851)
+	at com.journaldev.examples.ArrayListIteratorExample.main(ArrayListIteratorExample.java:34)
+Read more about ConcurrentModificationException and how to avoid it.
+
+Java ArrayList ListIterator
+We can use ListIterator to traverse the list in both the direction. It allows us to remove as well as add an element to the list. You can also get the iterator current position in ListIterator. Let’s have a look at a simple ArrayList ListIterator example for traversing the list backward and modifying the list data.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ArrayListListIteratorExample {
+
+	public static void main(String[] args) {
+
+		List<Integer> ints = new ArrayList<>();
+		for (int i = 0; i < 10; i++) ints.add(i);
+		
+		ListIterator<Integer> lit = ints.listIterator(ints.size());
+		
+		while(lit.hasPrevious()){
+			int x = lit.previous();
+			System.out.print(x + ", ");
+			if(x==5){
+				lit.remove();
+				lit.add(20);
+			}
+		}
+		System.out.println("\n"+ints);
+	}
+}
+Notice the output produced by the above program.
+
+
+9, 8, 7, 6, 5, 20, 4, 3, 2, 1, 0, 
+[0, 1, 2, 3, 4, 20, 6, 7, 8, 9]
+Java ArrayList removeIf
+ArrayList removeIf method was added in Java 8. This method will remove all of the elements in the list that satisfy the given predicate. Let’s look at a simple program of Java ArrayList removeIf example.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
+public class ArrayListRemoveIfExample {
+
+	public static void main(String[] args) {
+		List<Integer> ints = new ArrayList<>();
+		for (int i = 0; i < 10; i++) ints.add(i);
+		
+		Predicate<Integer> filter = new ArrayListRemoveIfExample(). new MyPredicate();
+		
+		ints.removeIf(filter);
+		
+		System.out.println(ints);
+		
+		//lambda expression, remove elements divisible by 3
+		ints.removeIf(x -> {return x %3 == 0;});
+		
+		System.out.println(ints);
+	}
+
+	class MyPredicate implements Predicate<Integer> {
+
+		@Override
+		public boolean test(Integer t) {
+			return t %2 == 0;
+		}
+		
+	}
+}
+Below is the output of above program.
+
+
+[1, 3, 5, 7, 9]
+[1, 5, 7]
+Java ArrayList replaceAll
+ArrayList replaceAll method was added in Java 8. It’s useful when you want to apply some function on all the elements of the list. Let’s have a look at ArrayList replaceAll example program.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.UnaryOperator;
+
+public class ArrayListReplaceAllExample {
+
+	public static void main(String[] args) {
+		List<Integer> ints = new ArrayList<>();
+		for (int i = 0; i < 10; i++) ints.add(i);
+		
+		//multiply all elements by 10
+		UnaryOperator<Integer> operator = new ArrayListReplaceAllExample(). new MyUnaryOperator();
+		ints.replaceAll(operator);
+		System.out.println(ints);
+		
+		//lambda expression example, multiply by 5
+		ints.replaceAll(x -> {return x*5;});
+		System.out.println(ints);
+	}
+
+	class MyUnaryOperator implements UnaryOperator<Integer>{
+
+		@Override
+		public Integer apply(Integer t) {
+			return t*10;
+		}
+		
+	}
+}
+Below is the output of above replaceAll example program.
+
+
+[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+[0, 50, 100, 150, 200, 250, 300, 350, 400, 450]
+Java ArrayList subList
+When we use subList method with a list, it returns the view of a portion of the original list. This new list is backed by the original list, so any modifications will reflect to other list too. The semantics of the list returned by this method become undefined if the backing list is structurally modified in any way other than via the returned list. All methods on the new list first check to see if the actual modCount of the backing list is equal to its expected value, and throw a ConcurrentModificationException if it is not. Let’s see this behaviour with a simple ArrayList subList example.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListSubListExample {
+
+	public static void main(String[] args) {
+		
+		List<String> names = new ArrayList<>();
+		names.add("Pankaj"); names.add("David");names.add("Lisa");names.add("Meghna");
+		
+		List<String> first2Names = names.subList(0, 2);
+		
+		System.out.println(names +" , "+first2Names);
+		
+		names.set(1, "Kumar");
+		//check the output below. :)
+		System.out.println(names +" , "+first2Names);
+		
+		first2Names.add("Megan"); //this is fine
+		System.out.println(names +" , "+first2Names); //this is fine
+		
+		//Let's modify the list size and get ConcurrentModificationException
+		names.add("Deepak");
+		System.out.println(names +" , "+first2Names); //this line throws exception
+
+	}
+
+}
+Below is the output of above ArrayList subList example program.
+
+
+[Pankaj, David, Lisa, Meghna] , [Pankaj, David]
+[Pankaj, Kumar, Lisa, Meghna] , [Pankaj, Kumar]
+[Pankaj, Kumar, Megan, Lisa, Meghna] , [Pankaj, Kumar, Megan]
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.util.ArrayList$SubList.checkForComodification(ArrayList.java:1231)
+	at java.util.ArrayList$SubList.listIterator(ArrayList.java:1091)
+	at java.util.AbstractList.listIterator(AbstractList.java:299)
+	at java.util.ArrayList$SubList.iterator(ArrayList.java:1087)
+	at java.util.AbstractCollection.toString(AbstractCollection.java:454)
+	at java.lang.String.valueOf(String.java:2994)
+	at java.lang.StringBuilder.append(StringBuilder.java:131)
+	at com.journaldev.examples.ArrayListSubListExample.main(ArrayListSubListExample.java:26)
+Java ArrayList Sorting
+We can use ArrayList sort method for sorting it’s elements. Below is a simple example showing ArrayList sorting.
+
+
+package com.journaldev.examples;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+
+public class ArrayListSortingExample {
+
+	public static void main(String[] args) {
+		List<Integer> ints = new ArrayList<>();
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) ints.add(random.nextInt(1000));
+		
+		System.out.println("Original List: "+ints);
+		
+		//sort the list
+		MyComparator c = new ArrayListSortingExample(). new MyComparator();
+		ints.sort(c);
+		System.out.println("Sorted in Increasing Order: "+ints);
+		
+		//lambda example, sort in reverse order
+		ints.sort((o1,o2) -> {return (o2-o1);});
+		System.out.println("Sorted in Decreasing Order: "+ints);
+		
+	}
+	
+	class MyComparator implements Comparator<Integer>{
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			return (o1 - o2);
+		}	
+	}
+}
+Output of above sorting program is:
+
+
+Original List: [580, 855, 889, 858, 536, 842, 223, 405, 854, 354]
+Sorted in Increasing Order: [223, 354, 405, 536, 580, 842, 854, 855, 858, 889]
+Sorted in Decreasing Order: [889, 858, 855, 854, 842, 580, 536, 405, 354, 223]
+Thread Safe ArrayList
+Java ArrayList is not thread-safe. So if you are working in a multi-threaded environment, use below code to get thread-safe ArrayList.
+
+
+List<Integer> synchronizedList = Collections.synchronizedList(ints);
+You can also use CopyOnWriteArrayList concurrent collection class in this case.
+
+That’s all for Java ArrayList example tutorial, I hope nothing important got missed here. 🙂

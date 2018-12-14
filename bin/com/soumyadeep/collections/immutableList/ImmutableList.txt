@@ -1,0 +1,145 @@
+Java SE 9: Factory Methods for Immutable List
+RAMBABU POSA 7 COMMENTS
+
+
+Table of Contents [hide]
+
+1 Post Brief Table of Content:
+2 Introduction
+3 Java SE 8: Empty Immutable List
+4 Java SE 9: Empty Immutable List
+5 Java SE 8: Non-Empty Immutable List
+6 Java SE 9: Non-Empty Immutable List
+7 Characteristics of Immutable List
+Post Brief Table of Content:
+Introduction
+Java SE 8: Empty Immutable List
+Java SE 9: Empty Immutable List
+Java SE 8: Non-Empty Immutable List
+Java SE 9: Non-Empty Immutable List
+Characteristics of Immutable List
+Introduction
+Oracle Corporation is going to release Java New Version: Java SE 9 around March 2017. So, I would like to deliver a series of Posts on Java SE 9 New Features. It is my forth post in this series.
+
+I have already delivered couple of posts on Java SE 9 New Features. Before going through this posts, please read them below :
+
+Java SE 9 REPL
+Java SE 9: Private methods in Interface
+Java SE 9: “var” for local variables
+In this post, we are going to discuss one more Java SE 9 New Feature: “Factory Methods for Immutable List” with some simple and suitable examples.
+
+Java SE 8: Empty Immutable List
+In Java SE 8 and earlier Versions, if we want to create an empty Immutable or Unmodifiable List, we should use Collections class utility method: unmodifiableList as shown below:
+
+Example:-
+
+
+ List<String> emptyList = new ArrayList<>();
+ List<String> immutableList = Collections.unmodifiableList(emptyList);
+NOTE:- Diamond Operator does NOT work in Java SE 6 and earlier versions. Rest of the code is same for all Java versions.
+
+
+Test the above code in Java SE 9 REPL:
+
+unmodified_empty_list
+
+Here we can observe that to create an empty Immutable List, we need to do lot of stuff as shown above. It is very tedious and verbose thing right. Let us see the same thing in Java SE 9 now.
+
+NOTE:- For simplicity and quick testing purpose, I’m using Java SE 9 REPL (JShell). That’s why we need an REPL for each language to test new feature quickly without doing much work.
+
+Java SE 9: Empty Immutable List
+To overcome those shortcomings, Java SE 9 has introduced a couple of useful methods in List interface so that we do not need to use all these tedious steps to create Immutable Empty List.
+
+If we go through the Java SE 9 List API, we can find the below method signature in List interface.
+
+
+ static <E> List<E> of()
+It is used to create an empty Immutable List (a List with zero elements).
+
+Example:-
+
+
+ List<String> immutableList = List.of();
+Test the above code in Java SE 9 REPL:
+
+new_unmodified_empty_list
+
+
+Here we can observe that it is very easy to create an empty Immutable List in Java SE 9.
+
+Java SE 8: Non-Empty Immutable List
+Now we will see how to create Non-Empty Immutable List in Java SE 8 and earlier versions.
+
+Example:-
+
+
+ List<String> list = new ArrayList<>();
+ list.add("one");
+ list.add("two");
+ list.add("three");
+ List<String> immutableList = Collections.unmodifiableList(list);
+Here also we can observe that to create a non-empty Immutable List, we need to do lot of stuff and very tedious and verbose steps. Let us see the same thing in Java SE 9 now.
+
+Java SE 9: Non-Empty Immutable List
+To overcome those shortcomings, Java SE 9 has introduced the following useful overloaded methods.
+
+These useful methods are used to create a new Immutable List with one element to 10 elements:
+
+
+static <E> List<E> of(E e1)
+static <E> List<E> of(E e1,E e2)	
+static <E> List<E> of(E e1,E e2,E e3)
+static <E> List<E> of(E e1,E e2,E e3,E e4)
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5)	
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5,E e6)	
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7)	
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8)	
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8,E e9)	
+static <E> List<E> of(E e1,E e2,E e3,E e4,E e5,E e6,E e7,E e8,E e9,E e10)
+The following is a Var-Args method (Variable Number of arguments method):
+
+
+static <E> List<E> of(E... elements)  
+Example:-
+
+
+ List<String> immutableList = List.of("one","two","three");
+It is very simple and no-verbosity in this code right. Very nice stuff!
+
+Test the above code in Java SE 9 REPL:
+
+
+jshell> List<String> immutableList = List.of("one","two","three")
+immutableList ==> [one, two, three]
+Characteristics of Immutable List
+As we know, Immutable Lists are not modifiable (unmodifiable collections). In this section, we will discuss the Characteristics of Immutable List(They are same in all Java versions.):
+
+They are Immutable.
+We cannot add, modify and delete their elements.
+If we try to perform Add/Delete/Update operations on them, we will get UnsupportedOperationException as shown below:
+
+jshell> immutableList.add("four")
+|  java.lang.UnsupportedOperationException thrown: 
+|        at ImmutableCollections.uoe (ImmutableCollections.java:68)
+|        at ImmutableCollections$AbstractImmutableList.add (ImmutableCollections.java:74)
+|        at (#2:1)
+They don’t allow null elements.
+If we try to create them with null elements, we will get NullPointerException as shown below:
+
+jshell> List>String> immutableList = List.of("one","two","three", null)
+|  java.lang.NullPointerException thrown: 
+|        at Objects.requireNonNull (Objects.java:221)
+|        at ImmutableCollections$ListN. (ImmutableCollections.java:179)
+|        at List.of (List.java:859)
+|        at (#4:1)
+If we try add null elements, we will get UnsupportedOperationException as shown below:
+
+jshell> immutableList.add(null)
+|  java.lang.UnsupportedOperationException thrown: 
+|        at ImmutableCollections.uoe (ImmutableCollections.java:68)
+|        at ImmutableCollections$AbstractImmutableList.add (ImmutableCollections.java:74)
+|        at (#3:1)
+They are serializable if all elements are serializable.
+That’s it all about “Java SE 9: Factory Methods for Immutable List” concept. We will discuss some more Java SE 9 New Features in my coming posts.
+
+Please drop me a comment if you like my post or have any issues/suggestions/type errors.
